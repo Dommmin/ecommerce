@@ -1,19 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Mail;
 
+use App\Models\Orders\Order;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Orders\Order;
 
-class OrderStatusChanged extends Mailable
+final class OrderStatusChanged extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
-    public function __construct(public Order $order)
-    {
-    }
+    public function __construct(public Order $order) {}
 
     public function build()
     {

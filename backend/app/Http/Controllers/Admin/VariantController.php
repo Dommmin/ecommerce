@@ -1,19 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\VariantStoreRequest;
 use App\Models\Products\Variant;
+use DB;
 use Illuminate\Http\Request;
 
-class VariantController extends Controller
+final class VariantController extends Controller
 {
     public function store(VariantStoreRequest $request)
     {
         $variant = new Variant();
 
-        \DB::transaction(function () use ($request, $variant) {
+        DB::transaction(function () use ($request, $variant): void {
             if ($request->hasFile('images')) {
                 $images = [];
                 foreach ($request->file('images') as $image) {
@@ -68,13 +71,13 @@ class VariantController extends Controller
         return response()->noContent();
     }
 
-    public function publish(Variant $variant)
+    public function publish(Variant $variant): void
     {
         $variant->published = true;
         $variant->save();
     }
 
-    public function unpublish(Variant $variant)
+    public function unpublish(Variant $variant): void
     {
         $variant->published = false;
         $variant->save();

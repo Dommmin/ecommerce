@@ -1,13 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Events\OrderStatusChangedEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Orders\Order;
+use Exception;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+final class OrderController extends Controller
 {
     public function index()
     {
@@ -37,7 +40,7 @@ class OrderController extends Controller
     {
         try {
             $order->update(['status' => $request->status]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $e;
         }
 

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Str;
 
-class VariantResource extends JsonResource
+final class VariantResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,23 +20,15 @@ class VariantResource extends JsonResource
         return [
             'id' => $this->id,
             'price' => $this->price,
-            'published' => (bool)$this->published,
+            'published' => (bool) $this->published,
             'main_photo' => $this->main_photo,
-            'images' => $this->when(Str::contains($request->url(), '/api/products/'), function () {
-                return json_decode($this->images, true) ?? [];
-            }),
+            'images' => $this->when(Str::contains($request->url(), '/api/products/'), fn() => json_decode($this->images, true) ?? []),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'favorite' => $this->favorite ?? false,
             'lowest_price' => $this->lowestPrice ? $this->lowestPrice->price : $this->price,
-            'product' => $this->whenLoaded('product', function () {
-                return new ProductResource($this->product);
-            }),
-            'options' => $this->whenLoaded('options', function () {
-                return OptionResource::collection($this->options);
-            }),
-            'color' => $this->whenLoaded('color', function () {
-                return new ColorResource($this->color);
-            }),
+            'product' => $this->whenLoaded('product', fn() => new ProductResource($this->product)),
+            'options' => $this->whenLoaded('options', fn() => OptionResource::collection($this->options)),
+            'color' => $this->whenLoaded('color', fn() => new ColorResource($this->color)),
         ];
     }
 }

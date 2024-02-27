@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Products\Product;
@@ -8,7 +10,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class RatingFactory extends Factory
+final class RatingFactory extends Factory
 {
     protected $model = Rating::class;
 

@@ -1,25 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use App\Models\Orders\Order;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class OrderComplete extends Mailable
+final class OrderComplete extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct(private readonly Order $order)
-    {
-    }
+    public function __construct(private readonly Order $order) {}
 
     /**
      * Get the message envelope.
@@ -55,7 +55,7 @@ class OrderComplete extends Mailable
     {
         return $this->markdown('emails.orders.confirmed')
             ->with([
-                'order' =>$this->order
+                'order' => $this->order
             ]);
     }
 }

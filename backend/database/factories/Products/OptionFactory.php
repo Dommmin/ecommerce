@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories\Products;
 
 use App\Models\Products\Option;
@@ -8,7 +10,7 @@ use App\Models\Size;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class OptionFactory extends Factory
+final class OptionFactory extends Factory
 {
     protected $model = Option::class;
 

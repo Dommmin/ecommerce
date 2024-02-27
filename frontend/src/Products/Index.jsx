@@ -216,8 +216,8 @@ function Index() {
                                         </div>
                                         <p>{variant.product.name}</p>
                                         <p className="text-xl font-bold text-error">${variant.price}</p>
-                                        <p className="text-sm">Najniższa cena: ${variant.lowest_price}</p>
-                                        <p className="text-sm">Cena regularna: ${variant.product.price}</p>
+                                        <p className="text-sm">Lowest price: ${variant.lowest_price}</p>
+                                        <p className="text-sm">Regular price: ${variant.product.price}</p>
                                     </div>
                                 </Link>
                                 {variant.favorite ? (

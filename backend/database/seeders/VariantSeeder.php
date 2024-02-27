@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\Color;
@@ -10,7 +12,7 @@ use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Seeder;
 
-class VariantSeeder extends Seeder
+final class VariantSeeder extends Seeder
 {
     protected Generator $faker;
 
@@ -23,17 +25,6 @@ class VariantSeeder extends Seeder
     public function __construct()
     {
         $this->faker = $this->withFaker();
-    }
-
-    /**
-     * Get a new Faker instance.
-     *
-     * @return \Faker\Generator
-     * @throws BindingResolutionException
-     */
-    protected function withFaker(): Generator
-    {
-        return Container::getInstance()->make(Generator::class);
     }
 
     /**
@@ -66,5 +57,16 @@ class VariantSeeder extends Seeder
                 ]);
             }
         }
+    }
+
+    /**
+     * Get a new Faker instance.
+     *
+     * @return Generator
+     * @throws BindingResolutionException
+     */
+    protected function withFaker(): Generator
+    {
+        return Container::getInstance()->make(Generator::class);
     }
 }

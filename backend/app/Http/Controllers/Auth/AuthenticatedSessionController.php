@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
-class AuthenticatedSessionController extends Controller
+final class AuthenticatedSessionController extends Controller
 {
     /**
      * Handle an incoming authentication request.
@@ -26,13 +28,13 @@ class AuthenticatedSessionController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if ( ! $user || ! Hash::check($request->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        $device    = substr($request->userAgent() ?? '', 0, 255);
+        $device    = mb_substr($request->userAgent() ?? '', 0, 255);
         $expiresAt = $request->remember ? null : now()->addMinutes(config('session.lifetime'));
 
         return response()->json([

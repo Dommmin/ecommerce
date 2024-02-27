@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -7,7 +9,7 @@ use App\Models\Color;
 use App\Models\Products\Variant;
 use Illuminate\Http\Request;
 
-class ColorController extends Controller
+final class ColorController extends Controller
 {
     public function index(Request $request)
     {

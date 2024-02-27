@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Discount;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class DiscountFactory extends Factory
+final class DiscountFactory extends Factory
 {
     protected $model = Discount::class;
 

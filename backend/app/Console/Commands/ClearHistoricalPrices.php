@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Models\Price;
 use Illuminate\Console\Command;
 
-class ClearHistoricalPrices extends Command
+final class ClearHistoricalPrices extends Command
 {
     /**
      * The name and signature of the console command.
@@ -24,7 +26,7 @@ class ClearHistoricalPrices extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         Price::where('created_at', '<', now()->subDays(30))->delete();
     }

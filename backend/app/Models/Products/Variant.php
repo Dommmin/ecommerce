@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Products;
 
 use App\Models\Color;
@@ -15,12 +17,74 @@ use Illuminate\Support\Facades\Cache;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Variant extends Model
+final class Variant extends Model
 {
-    use HasFactory, HasSlug;
+    use HasFactory;
+    use HasSlug;
 
     protected $guarded = [];
     protected $appends = ['main_photo'];
+
+    public static function getFeatureProducts()
+    {
+        //        $page = Paginator::resolveCurrentPage() ?? 1;
+
+        //        return Cache::tags('feature-products')->remember("feature-products.page.{$page}", 60*60*24, function () {
+        return Variant::query()
+            ->published()
+            ->with([
+                'product' => function ($query): void {
+                    $query->withAvg('ratings', 'value');
+                },
+                'favorite',
+                'product.vote',
+                'lowestPrice',
+            ])
+            ->whereHas('options')
+            ->groupBy('variants.product_id', 'variants.id', 'variants.color_id', 'variants.url', 'variants.price', 'variants.images', 'variants.published', 'variants.thumbnail', 'variants.created_at', 'variants.updated_at')
+            ->orderBy('price')
+            ->simplePaginate(20);
+        //        });
+    }
+
+    public static function getProducts($sort = 'id', $order = 'desc')
+    {
+        $request = request();
+
+        return Variant::query()
+            ->published()
+            ->with([
+                'product' => function ($query): void {
+                    $query->withAvg('ratings', 'value')->withCount('ratings');
+                },
+                'favorite',
+                'product.vote',
+                'product.brand',
+                'lowestPrice'
+            ])
+            ->withWhereHas('options')
+            ->when($request->filled('category'), function ($query) use ($request) {
+                // Use whereHas to filter based on the associated product's category_id
+                return $query->whereHas('product', function ($productQuery) use ($request): void {
+                    $productQuery->where('category_id', $request->get('category'));
+                });
+            })
+            ->when($request->filled('brand'), function ($query) use ($request) {
+                // Use whereHas to filter based on the associated product's brand_id
+                return $query->whereHas('product', function ($productQuery) use ($request): void {
+                    $productQuery->where('brand_id', $request->get('brand'));
+                });
+            })
+            ->when($request->filled('search'), function ($query) use ($request) {
+                // Use whereHas to filter based on the associated product's search
+                return $query->whereHas('product', function ($productQuery) use ($request): void {
+                    $productQuery->where('name', 'like', '%' . $request->get('search') . '%');
+                });
+            })
+            ->orderBy($sort, $order)
+            ->groupBy('variants.product_id', 'variants.id', 'variants.color_id', 'variants.url', 'variants.price', 'variants.images', 'variants.published', 'variants.thumbnail', 'variants.created_at', 'variants.updated_at')
+            ->simplePaginate(12);
+    }
 
     public function options(): HasMany
     {
@@ -69,67 +133,6 @@ class Variant extends Model
         return $images[0];
     }
 
-    public static function getFeatureProducts()
-    {
-//        $page = Paginator::resolveCurrentPage() ?? 1;
-
-//        return Cache::tags('feature-products')->remember("feature-products.page.{$page}", 60*60*24, function () {
-            return Variant::query()
-                ->published()
-                ->with([
-                    'product' => function ($query) {
-                        $query->withAvg('ratings', 'value');
-                    },
-                    'favorite',
-                    'product.vote',
-                    'lowestPrice',
-                ])
-                ->whereHas('options')
-                ->groupBy('variants.product_id', 'variants.id', 'variants.color_id', 'variants.url', 'variants.price', 'variants.images', 'variants.published', 'variants.thumbnail', 'variants.created_at', 'variants.updated_at')
-                ->orderBy('price')
-                ->simplePaginate(20);
-//        });
-    }
-
-    public static function getProducts($sort = 'id', $order = 'desc')
-    {
-        $request = request();
-
-        return Variant::query()
-            ->published()
-            ->with([
-                'product' => function ($query) {
-                    $query->withAvg('ratings', 'value')->withCount('ratings');
-                },
-                'favorite',
-                'product.vote',
-                'product.brand',
-                'lowestPrice'
-            ])
-            ->withWhereHas('options')
-            ->when($request->filled('category'), function ($query) use ($request) {
-                // Use whereHas to filter based on the associated product's category_id
-                return $query->whereHas('product', function ($productQuery) use ($request) {
-                    $productQuery->where('category_id', $request->get('category'));
-                });
-            })
-            ->when($request->filled('brand'), function ($query) use ($request) {
-                // Use whereHas to filter based on the associated product's brand_id
-                return $query->whereHas('product', function ($productQuery) use ($request) {
-                    $productQuery->where('brand_id', $request->get('brand'));
-                });
-            })
-            ->when($request->filled('search'), function ($query) use ($request) {
-                // Use whereHas to filter based on the associated product's search
-                return $query->whereHas('product', function ($productQuery) use ($request) {
-                    $productQuery->where('name', 'like', '%' . $request->get('search') . '%');
-                });
-            })
-            ->orderBy($sort, $order)
-            ->groupBy('variants.product_id', 'variants.id', 'variants.color_id', 'variants.url', 'variants.price', 'variants.images', 'variants.published', 'variants.thumbnail', 'variants.created_at', 'variants.updated_at')
-            ->simplePaginate(12);
-    }
-
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -141,8 +144,8 @@ class Variant extends Model
             ->saveSlugsTo('url');
     }
 
-//    public function getRouteKeyName(): string
-//    {
-//        return 'url';
-//    }
+    //    public function getRouteKeyName(): string
+    //    {
+    //        return 'url';
+    //    }
 }

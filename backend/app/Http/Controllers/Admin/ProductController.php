@@ -1,17 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ProductStoreRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Products\Product;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
-class ProductController
+final class ProductController
 {
     public function index()
     {
@@ -54,20 +57,20 @@ class ProductController
                     sort($expectedHeaders);
 
                     if ($keys !== $expectedHeaders) {
-                        throw new \Exception('Headers do not match expected headers');
+                        throw new Exception('Headers do not match expected headers');
                     }
 
                     foreach ($rowProperties as $key => $value) {
                         if (empty($value)) {
-                            throw new \Exception("Empty field: $key");
+                            throw new Exception("Empty field: {$key}");
                         }
                     }
 
                     $category = Arr::get($categories, $rowProperties['category']);
                     $brand    = Arr::get($brands, $rowProperties['brand']);
 
-                    if (!$brand || !$category) {
-                        throw new \Exception('Brand or category not found');
+                    if ( ! $brand || ! $category) {
+                        throw new Exception('Brand or category not found');
                     }
 
                     $product = [
@@ -82,7 +85,7 @@ class ProductController
 
                     $products[] = $product;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
             }
 

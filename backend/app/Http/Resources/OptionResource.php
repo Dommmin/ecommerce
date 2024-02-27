@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OptionResource extends JsonResource
+final class OptionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +19,7 @@ class OptionResource extends JsonResource
         return [
             'id' => $this->id,
             'quantity' => $this->quantity,
-            'size' => $this->whenLoaded('size', function () {
-                return new SizeResource($this->size);
-            })
+            'size' => $this->whenLoaded('size', fn() => new SizeResource($this->size))
         ];
     }
 }

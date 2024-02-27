@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Orders;
 
 use App\Enums\StatusEnum;
@@ -12,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Str;
 
-class Order extends Model
+final class Order extends Model
 {
     use HasFactory;
 
@@ -22,17 +24,18 @@ class Order extends Model
     ];
     protected array $dates = ['created_at', 'updated_at'];
 
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($model): void {
+            $model->uuid = Str::uuid();
+        });
+    }
+
     public function getRouteKey(): string
     {
         return 'uuid';
-    }
-
-    public static function boot() {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->uuid = Str::uuid();
-        });
     }
 
     public function items(): HasMany

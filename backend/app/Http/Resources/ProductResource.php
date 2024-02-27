@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Str;
 
-class ProductResource extends JsonResource
+final class ProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,24 +20,16 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'short_description' => \Str::limit($this->description),
+            'short_description' => Str::limit($this->description),
             'description' => $this->description,
             'price' => $this->price,
-            'voted' => (bool)$this->vote,
-            'rating' => number_format($this->ratings_avg_value,2) ?? 0,
+            'voted' => (bool) $this->vote,
+            'rating' => number_format($this->ratings_avg_value, 2) ?? 0,
             'ratings_count' => $this->ratings_count,
-            'brand' => $this->whenLoaded('brand', function () {
-                return new BrandResource($this->brand);
-            }),
-            'category' => $this->whenLoaded('category', function () {
-                return new CategoryResource($this->category);
-            }),
-            'variants' => $this->whenLoaded('variants', function () {
-                return VariantResource::collection($this->variants);
-            }),
-            'option' => $this->whenLoaded('option', function () {
-                return new OptionResource($this->option);
-            })
+            'brand' => $this->whenLoaded('brand', fn() => new BrandResource($this->brand)),
+            'category' => $this->whenLoaded('category', fn() => new CategoryResource($this->category)),
+            'variants' => $this->whenLoaded('variants', fn() => VariantResource::collection($this->variants)),
+            'option' => $this->whenLoaded('option', fn() => new OptionResource($this->option))
         ];
     }
 }

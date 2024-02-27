@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Rating;
 use Illuminate\Http\Request;
 
-class RatingController extends Controller
+final class RatingController extends Controller
 {
     public function store(Request $request)
     {

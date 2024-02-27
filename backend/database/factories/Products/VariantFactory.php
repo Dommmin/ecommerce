@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories\Products;
 
 use App\Models\Color;
@@ -10,23 +12,23 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
-class VariantFactory extends Factory
+final class VariantFactory extends Factory
 {
     protected $model = Variant::class;
 
     public function definition(): array
     {
         // Download the image
-//        $imageResponse = Http::get('https://picsum.photos/640/480');
-//
+        //        $imageResponse = Http::get('https://picsum.photos/640/480');
+        //
         // Generate a unique filename
-//        $filename = 'mainPhoto_' . now()->timestamp . '.jpg';
-//
+        //        $filename = 'mainPhoto_' . now()->timestamp . '.jpg';
+        //
         // Store the image locally in the storage directory
-//        Storage::put('public/images/' . $filename, $imageResponse->body());
-//
+        //        Storage::put('public/images/' . $filename, $imageResponse->body());
+        //
         // Get the full HTTP link to the stored image
-//        $imageUrl = url('storage/images/' . $filename);
+        //        $imageUrl = url('storage/images/' . $filename);
 
         return [
             'product_id' => Product::inRandomOrder()->pluck('id')->first(),

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Resources\VariantResource;
 use App\Models\Products\Variant;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+final class ProductController extends Controller
 {
     public function index(Request $request)
     {
@@ -39,9 +41,9 @@ class ProductController extends Controller
         $variant = Variant::query()
             ->where('id', $variantId)
             ->with([
-                'product' => function ($query) {
+                'product' => function ($query): void {
                     $query->withAvg('ratings', 'value')
-                        ->with(['variants' => function ($query) {
+                        ->with(['variants' => function ($query): void {
                             $query->where('published', true)
                                 ->with('color');
                         }]);
@@ -53,7 +55,7 @@ class ProductController extends Controller
             ->published()
             ->first();
 
-        if (!$variant) {
+        if ( ! $variant) {
             return response()->json([
                 'message' => 'Product not found'
             ], 404);

@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Enums\ShipmentEnum;
 use App\Models\Shipment;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ShipmentSeeder extends Seeder
+final class ShipmentSeeder extends Seeder
 {
     /**
      * Run the database seeds.

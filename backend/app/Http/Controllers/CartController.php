@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Products\Option;
-use App\Models\Products\Variant;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class CartController extends Controller
+final class CartController extends Controller
 {
     public function index()
     {
@@ -37,7 +38,7 @@ class CartController extends Controller
             $option = Option::where('id', $optionId)->first();
 
             if ($cart->quantity < $option->quantity) {
-                $cart->update(['quantity' => $cart->quantity +1]);
+                $cart->update(['quantity' => $cart->quantity + 1]);
             } else {
                 throw ValidationException::withMessages([
                     'event' => 'Quantity must be less than or equal to ' . $option->quantity,
@@ -63,24 +64,24 @@ class CartController extends Controller
             abort(403);
         }
 
-        if (request('event') === 'add') {
+        if ('add' === request('event')) {
             if ($cart->quantity < $cart->option->quantity) {
-                return $cart->update(['quantity' => $cart->quantity +1]);
-            } else {
-                throw ValidationException::withMessages([
-                    'event' => 'Quantity must be less than or equal to ' . $cart->option->quantity,
-                ]);
+                return $cart->update(['quantity' => $cart->quantity + 1]);
             }
+            throw ValidationException::withMessages([
+                'event' => 'Quantity must be less than or equal to ' . $cart->option->quantity,
+            ]);
+
         }
 
-        if (request('event') === 'subtract') {
+        if ('subtract' === request('event')) {
             if ($cart->quantity <= 1) {
                 throw ValidationException::withMessages([
                     'event' => 'Quantity must be greater than 1',
                 ]);
             }
 
-            return $cart->update(['quantity' => $cart->quantity -1]);
+            return $cart->update(['quantity' => $cart->quantity - 1]);
         }
 
         return response()->json(['success' => false]);
