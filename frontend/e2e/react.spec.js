@@ -28,7 +28,7 @@ test('logins and adds a product to the cart', async ({ page }) => {
     await page.waitForTimeout(2000);
 
     await page.locator('[data-test="shopping-cart"]').click();
-    page.locator('[data-test="cart-item-0"]')
+    page.locator('[data-test="cart-item-0"]');
     expect(await page.locator('[data-test="quantity"]').innerText()).toBe('1');
     await page.locator('[data-test="add-quantity"]').click();
     await page.waitForTimeout(2000);

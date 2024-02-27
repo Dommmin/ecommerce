@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
-import axios from "../../lib/axios.js";
-import {useNavigate} from "react-router-dom";
+import { useEffect, useState } from 'react';
+import axios from '../../lib/axios.js';
+import { useNavigate } from 'react-router-dom';
 
 function Create() {
     const [name, setName] = useState('');
@@ -14,7 +14,6 @@ function Create() {
     const [brands, setBrands] = useState([]);
     // const [variantData, setVariantData] = useState([]);
     const navigate = useNavigate();
-
 
     // function fetchSizes() {
     //     axios
@@ -42,22 +41,22 @@ function Create() {
         axios
             .get('/api/admin/categories')
             .then((res) => {
-                setCategories(res.data)
+                setCategories(res.data);
             })
             .catch((err) => {
                 console.log(err);
-            })
+            });
     }
 
     function fetchBrands() {
         axios
             .get('/api/admin/brands')
             .then((res) => {
-                setBrands(res.data)
+                setBrands(res.data);
             })
             .catch((err) => {
                 console.log(err);
-            })
+            });
     }
 
     useEffect(() => {
@@ -143,12 +142,12 @@ function Create() {
                 brand_id: brand,
             })
             .then(() => {
-                navigate('/admin/products')
+                navigate('/admin/products');
             })
             .catch((err) => {
                 console.log(err);
-            })
-    }
+            });
+    };
 
     // const handleRemoveVariant = (index) => {
     //     setVariantData(prevState => prevState.filter((_, i) => i !== index));
@@ -183,7 +182,8 @@ function Create() {
                                     type="number"
                                     min="1"
                                     placeholder="Set price..."
-                                    className="input input-bordered input-primary" required
+                                    className="input input-bordered input-primary"
+                                    required
                                 />
                             </label>
                         </div>
@@ -195,16 +195,16 @@ function Create() {
                                 </div>
                                 <select
                                     value={category}
-                                    onChange={event => setCategory(event.target.value)}
+                                    onChange={(event) => setCategory(event.target.value)}
                                     className="select select-primary"
                                     aria-placeholder="Choose category"
                                     required
                                 >
-                                    <option value="" disabled>Choose category</option>
+                                    <option value="" disabled>
+                                        Choose category
+                                    </option>
                                     {categories.map((category) => (
-                                        <option
-                                            key={category.id}
-                                            value={category.id}>
+                                        <option key={category.id} value={category.id}>
                                             {capitalizeFirstLetter(category.name)}
                                         </option>
                                     ))}
@@ -216,16 +216,16 @@ function Create() {
                                 </div>
                                 <select
                                     value={brand}
-                                    onChange={event => setBrand(event.target.value)}
+                                    onChange={(event) => setBrand(event.target.value)}
                                     className="select select-primary"
                                     aria-placeholder="Choose brand"
                                     required
                                 >
-                                    <option value="" disabled>Choose brand</option>
+                                    <option value="" disabled>
+                                        Choose brand
+                                    </option>
                                     {brands.map((brand) => (
-                                        <option
-                                            key={brand.id}
-                                            value={brand.id}>
+                                        <option key={brand.id} value={brand.id}>
                                             {capitalizeFirstLetter(brand.name)}
                                         </option>
                                     ))}
@@ -243,19 +243,21 @@ function Create() {
                                     minLength="10"
                                     className="textarea textarea-primary"
                                     rows="6"
-                                    placeholder="Fill the description..." required
+                                    placeholder="Fill the description..."
+                                    required
                                 />
                             </label>
                         </div>
                     </div>
                     <div className=" mt-2">
-                        <button type="submit" onClick={handleSave} className="w-full btn btn-success">Save</button>
+                        <button type="submit" onClick={handleSave} className="w-full btn btn-success">
+                            Save
+                        </button>
                     </div>
                 </div>
             </div>
         </>
-
-    )
+    );
 }
 
 export default Create;

@@ -1,42 +1,36 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
-import { library } from '@fortawesome/fontawesome-svg-core'
-import {
-    faBoxOpen,
-    faHeart as faHeartSolid,
-    faHouse,
-    faLayerGroup,
-    faTag
-} from "@fortawesome/free-solid-svg-icons";
-import {faHeart} from "@fortawesome/free-regular-svg-icons";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faBoxOpen, faHeart as faHeartSolid, faHouse, faLayerGroup, faTag } from '@fortawesome/free-solid-svg-icons';
+import { faHeart } from '@fortawesome/free-regular-svg-icons';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Layout from "./components/Layout.jsx";
-import CartIndex from "./Cart/Index.jsx";
-import Index from "./Index.jsx";
-import ProductsIndex from "./Products/Index.jsx";
-import ProductsShow from "./Products/Show.jsx";
-import Login from "./components/Login.jsx";
-import Register from "./components/Register.jsx";
-import AdminLayout from "./Layouts/AdminLayout.jsx";
-import Favorites from "./User/Favorites.jsx";
-import UserOrdersIndex from "./User/Orders/Index.jsx";
-import UserOrdersShow from "./User/Orders/Show.jsx";
-import AdminProductsCreate from "./Admin/Products/Create.jsx";
-import AdminProductsIndex from "./Admin/Products/Index.jsx";
-import AdminVariantsCreate from "./Admin/Products/Variants/Create.jsx";
-import AdminVariantsEdit from "./Admin/Products/Variants/Edit.jsx";
-import AdminBrandsIndex from "./Admin/Brands/Index.jsx";
-import AdminCategoriesIndex from "./Admin/Categories/Index.jsx";
-import AdminOrdersIndex from "./Admin/Orders/Index.jsx";
-import AdminOrdersShow from "./Admin/Orders/Show.jsx";
-import AdminUsers from "./Admin/Users.jsx";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import PageNotFound from "./components/PageNotFound.jsx";
+import Layout from './components/Layout.jsx';
+import CartIndex from './Cart/Index.jsx';
+import Index from './Index.jsx';
+import ProductsIndex from './Products/Index.jsx';
+import ProductsShow from './Products/Show.jsx';
+import Login from './components/Login.jsx';
+import Register from './components/Register.jsx';
+import AdminLayout from './Layouts/AdminLayout.jsx';
+import Favorites from './User/Favorites.jsx';
+import UserOrdersIndex from './User/Orders/Index.jsx';
+import UserOrdersShow from './User/Orders/Show.jsx';
+import AdminProductsCreate from './Admin/Products/Create.jsx';
+import AdminProductsIndex from './Admin/Products/Index.jsx';
+import AdminVariantsCreate from './Admin/Products/Variants/Create.jsx';
+import AdminVariantsEdit from './Admin/Products/Variants/Edit.jsx';
+import AdminBrandsIndex from './Admin/Brands/Index.jsx';
+import AdminCategoriesIndex from './Admin/Categories/Index.jsx';
+import AdminOrdersIndex from './Admin/Orders/Index.jsx';
+import AdminOrdersShow from './Admin/Orders/Show.jsx';
+import AdminUsers from './Admin/Users.jsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import PageNotFound from './components/PageNotFound.jsx';
 
-library.add(faHeart, faHeartSolid, faHouse, faBoxOpen, faTag, faLayerGroup)
+library.add(faHeart, faHeartSolid, faHouse, faBoxOpen, faTag, faLayerGroup);
 
 const router = createBrowserRouter([
     {
@@ -69,17 +63,17 @@ const router = createBrowserRouter([
             },
             {
                 path: '/products/:id',
-                element: <ProductsShow />
+                element: <ProductsShow />,
             },
         ],
     },
     {
         path: '/login',
-        element: <Login />
+        element: <Login />,
     },
     {
         path: '/register',
-        element: <Register />
+        element: <Register />,
     },
     {
         path: '/admin',
@@ -121,18 +115,18 @@ const router = createBrowserRouter([
                 path: '/admin/brands',
                 element: <AdminBrandsIndex />,
             },
-        ]
+        ],
     },
     {
         path: '*',
-        element: <PageNotFound />
-    }
-])
+        element: <PageNotFound />,
+    },
+]);
 
 const queryClient = new QueryClient({
     defaultOptions: {
         staleTime: 5000,
-    }
+    },
 });
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -141,4 +135,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <RouterProvider router={router} />
         </QueryClientProvider>
     </React.StrictMode>,
-)
+);

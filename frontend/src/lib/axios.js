@@ -1,4 +1,4 @@
-import Axios from 'axios'
+import Axios from 'axios';
 
 const axios = Axios.create({
     baseURL: 'http://localhost:8000',
@@ -6,6 +6,6 @@ const axios = Axios.create({
         'X-Requested-With': 'XMLHttpRequest',
     },
     withCredentials: true,
-})
+});
 
-export default axios
+export default axios;

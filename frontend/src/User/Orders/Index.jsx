@@ -1,48 +1,54 @@
-import {useEffect, useState} from "react";
-import axios from "../../lib/axios.js";
-import {Link} from "react-router-dom";
+import { useEffect, useState } from 'react';
+import axios from '../../lib/axios.js';
+import { Link } from 'react-router-dom';
 
 function Index() {
-    const [orders, setOrders] = useState([])
+    const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const getOrders = () => {
         axios
-            .get("api/orders")
+            .get('api/orders')
             .then((res) => {
-                setOrders(res.data)
+                setOrders(res.data);
             })
             .catch((err) => {
-                console.log(err)
+                console.log(err);
             })
             .finally(() => {
-                setIsLoading(false)
-            })
-    }
+                setIsLoading(false);
+            });
+    };
 
     useEffect(() => {
-        getOrders()
-    }, [])
+        getOrders();
+    }, []);
 
     if (isLoading) {
-        return <div className="flex justify-center items-center max-w-7xl mx-auto">
-            <span className="loading loading-spinner text-primary"></span>
-        </div>
+        return (
+            <div className="flex justify-center items-center max-w-7xl mx-auto">
+                <span className="loading loading-spinner text-primary"></span>
+            </div>
+        );
     }
 
-   if (!orders.length) {
-       return <div data-test="no-products" className="flex justify-center items-center max-w-7xl mx-auto">There are no orders yet...</div>
-   }
-
-   const getTotalPrice = (items) => {
-       let price = 0;
-
-       items.map((item) => {
-           price += item.price;
-       })
-
-       return price;
+    if (!orders.length) {
+        return (
+            <div data-test="no-products" className="flex justify-center items-center max-w-7xl mx-auto">
+                There are no orders yet...
+            </div>
+        );
     }
+
+    const getTotalPrice = (items) => {
+        let price = 0;
+
+        items.map((item) => {
+            price += item.price;
+        });
+
+        return price;
+    };
 
     return (
         <div>
@@ -61,10 +67,10 @@ function Index() {
                             </div>
                         </Link>
                     </div>
-                )
+                );
             })}
         </div>
-    )
+    );
 }
 
 export default Index;

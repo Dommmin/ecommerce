@@ -1,6 +1,6 @@
-import {useNavigate, useParams} from "react-router-dom";
-import {useCallback, useEffect, useState} from "react";
-import axios from "../../../lib/axios.js";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import axios from '../../../lib/axios.js';
 
 function Create() {
     const id = useParams().id;
@@ -9,7 +9,7 @@ function Create() {
     const [published, setPublished] = useState(false);
     const [color, setColor] = useState('');
     const [sizes, setSizes] = useState([]);
-    const [images, setImages] = useState(Array(6).fill(null))
+    const [images, setImages] = useState(Array(6).fill(null));
     const [imagePreviews, setImagePreviews] = useState(Array(6).fill(null));
     const [tabIndex, setTabIndex] = useState(0);
     const [variants, setVariants] = useState([]);
@@ -25,9 +25,7 @@ function Create() {
     };
 
     const handleQuantityChange = (id, value) => {
-        setVariants((prevVariants) =>
-            prevVariants.map((v) => (v.id === id ? { ...v, quantity: value } : v))
-        );
+        setVariants((prevVariants) => prevVariants.map((v) => (v.id === id ? { ...v, quantity: value } : v)));
     };
 
     const navigate = useNavigate();
@@ -54,20 +52,18 @@ function Create() {
             .get('/api/admin/colors', {
                 params: {
                     product_id: id,
-                }
+                },
             })
             .then((res) => {
-                setColors(res.data)
-            })
-    },[id]);
+                setColors(res.data);
+            });
+    }, [id]);
 
     const fetchSizes = () => {
-        axios
-            .get('/api/admin/sizes')
-            .then((res) => {
-                setSizes(res.data)
-            })
-    }
+        axios.get('/api/admin/sizes').then((res) => {
+            setSizes(res.data);
+        });
+    };
 
     useEffect(() => {
         fetchColors();
@@ -112,20 +108,29 @@ function Create() {
         axios
             .post('/api/admin/variants', formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                    'Content-Type': 'multipart/form-data',
+                },
             })
             .then(() => {
-                navigate('/admin/products')
+                navigate('/admin/products');
             })
             .catch((err) => {
-                console.log(err)
-            })
-    }
+                console.log(err);
+            });
+    };
 
     return (
         <div role="tablist" className="tabs tabs-bordered">
-            <input checked={tabIndex == 0} value="0" onChange={(e) => setTabIndex(e.target.value)} type="radio" name="my_tabs_1" role="tab" className="tab text-xl" aria-label="General"/>
+            <input
+                checked={tabIndex == 0}
+                value="0"
+                onChange={(e) => setTabIndex(e.target.value)}
+                type="radio"
+                name="my_tabs_1"
+                role="tab"
+                className="tab text-xl"
+                aria-label="General"
+            />
             <div role="tabpanel" className="tab-content p-10">
                 <div className="w-full max-w-4xl">
                     <div className="space-y-8">
@@ -139,7 +144,8 @@ function Create() {
                                     type="number"
                                     min="1"
                                     placeholder="Set price..."
-                                    className="input input-bordered input-primary" required
+                                    className="input input-bordered input-primary"
+                                    required
                                 />
                             </label>
                             <label className="form-control w-full">
@@ -148,16 +154,16 @@ function Create() {
                                 </div>
                                 <select
                                     value={color}
-                                    onChange={event => setColor(event.target.value)}
+                                    onChange={(event) => setColor(event.target.value)}
                                     className="select select-primary"
                                     aria-placeholder="Choose color"
                                     required
                                 >
-                                    <option value="" disabled>Choose color</option>
+                                    <option value="" disabled>
+                                        Choose color
+                                    </option>
                                     {colors.map((color) => (
-                                        <option
-                                            key={color.id}
-                                            value={color.id}>
+                                        <option key={color.id} value={color.id}>
                                             {capitalizeFirstLetter(color.name)}
                                         </option>
                                     ))}
@@ -167,8 +173,11 @@ function Create() {
                         <div className="flex justify-end">
                             <label className="cursor-pointer label">
                                 <span className="label-text mr-2">Published</span>
-                                <input onChange={event => setPublished(event.target.checked)} type="checkbox"
-                                       className="toggle toggle-primary"/>
+                                <input
+                                    onChange={(event) => setPublished(event.target.checked)}
+                                    type="checkbox"
+                                    className="toggle toggle-primary"
+                                />
                             </label>
                         </div>
                     </div>
@@ -185,25 +194,37 @@ function Create() {
                                 />
                                 <label htmlFor={`file-input-${index}`}>
                                     {image ? (
-                                        <img className="w-72 max-h-40 rounded-xl" src={image} alt="Preview"/>
+                                        <img className="w-72 max-h-40 rounded-xl" src={image} alt="Preview" />
                                     ) : (
-                                        <img className="w-72 cursor-pointer rounded-xl bg-gray-200"
-                                             src="https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image-300x225.png"
-                                             alt="Placeholder" title="Click to upload"/>
+                                        <img
+                                            className="w-72 cursor-pointer rounded-xl bg-gray-200"
+                                            src="https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image-300x225.png"
+                                            alt="Placeholder"
+                                            title="Click to upload"
+                                        />
                                     )}
                                 </label>
                             </div>
                         ))}
                     </div>
                     <div className=" mt-2">
-                        <button type="submit" onClick={handleSave} className="w-full btn btn-success">Save
+                        <button type="submit" onClick={handleSave} className="w-full btn btn-success">
+                            Save
                         </button>
                     </div>
                 </div>
             </div>
 
-            <input checked={tabIndex == 1} value="1" onChange={(e) => setTabIndex(e.target.value)} type="radio"
-                   name="my_tabs_1" role="tab" className="tab text-xl" aria-label="Variants"/>
+            <input
+                checked={tabIndex == 1}
+                value="1"
+                onChange={(e) => setTabIndex(e.target.value)}
+                type="radio"
+                name="my_tabs_1"
+                role="tab"
+                className="tab text-xl"
+                aria-label="Variants"
+            />
             <div role="tabpanel" className="tab-content p-10">
                 <div className="space-y-4 max-w-xl">
                     {sizes.map((size) => (
@@ -227,12 +248,8 @@ function Create() {
                                     className="input input-bordered input-primary"
                                     id={size.id}
                                     onChange={(e) => handleQuantityChange(size.id, e.target.value)}
-                                    value={
-                                        variants.find((v) => v.id === size.id)?.quantity || ''
-                                    } // Display the quantity if it exists in the state
-                                    disabled={
-                                        !variants.find((v) => v.id === size.id)?.selected
-                                    } // Disable the input if the checkbox isn't selected
+                                    value={variants.find((v) => v.id === size.id)?.quantity || ''} // Display the quantity if it exists in the state
+                                    disabled={!variants.find((v) => v.id === size.id)?.selected} // Disable the input if the checkbox isn't selected
                                     required
                                 />
                             </div>
@@ -241,7 +258,7 @@ function Create() {
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default Create;
