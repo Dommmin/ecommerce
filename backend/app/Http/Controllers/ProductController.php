@@ -6,11 +6,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\VariantResource;
 use App\Models\Products\Variant;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 final class ProductController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $sortBy = $request->get('sortBy');
 
@@ -29,33 +31,18 @@ final class ProductController extends Controller
         return VariantResource::collection($variants);
     }
 
-    public function featureProducts()
+    public function featureProducts(): AnonymousResourceCollection
     {
         $variants = Variant::getFeatureProducts();
 
         return VariantResource::collection($variants);
     }
 
-    public function show($variantId)
+    public function show($variantId): JsonResponse|VariantResource
     {
-        $variant = Variant::query()
-            ->where('id', $variantId)
-            ->with([
-                'product' => function ($query): void {
-                    $query->withAvg('ratings', 'value')
-                        ->with(['variants' => function ($query): void {
-                            $query->where('published', true)
-                                ->with('color');
-                        }]);
-                },
-                'options.size',
-                'favorite',
-                'lowestPrice'
-            ])
-            ->published()
-            ->first();
-
-        if ( ! $variant) {
+        try {
+            $variant = Variant::getProduct($variantId);
+        } catch (\Throwable $e) {
             return response()->json([
                 'message' => 'Product not found'
             ], 404);

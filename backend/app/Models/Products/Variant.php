@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Cache;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -27,37 +25,37 @@ final class Variant extends Model
 
     public static function getFeatureProducts()
     {
-        //        $page = Paginator::resolveCurrentPage() ?? 1;
+        $user = auth()->user();
 
-        //        return Cache::tags('feature-products')->remember("feature-products.page.{$page}", 60*60*24, function () {
-        return Variant::query()
-            ->published()
+        $query = Variant::query()
             ->with([
                 'product' => function ($query): void {
-                    $query->withAvg('ratings', 'value');
+                    $query->withAvg('ratings', 'value')->withCount('ratings');
                 },
-                'favorite',
                 'product.vote',
                 'lowestPrice',
             ])
             ->whereHas('options')
-            ->groupBy('variants.product_id', 'variants.id', 'variants.color_id', 'variants.url', 'variants.price', 'variants.images', 'variants.published', 'variants.thumbnail', 'variants.created_at', 'variants.updated_at')
-            ->orderBy('price')
-            ->simplePaginate(20);
-        //        });
+            ->published()
+            ->orderBy('price');
+
+        if ($user) {
+            $query->with('isFavorite');
+        }
+
+        return $query->simplePaginate(20);
     }
 
     public static function getProducts($sort = 'id', $order = 'desc')
     {
         $request = request();
+        $user = auth()->user();
 
-        return Variant::query()
-            ->published()
+        $query = Variant::query()
             ->with([
                 'product' => function ($query): void {
                     $query->withAvg('ratings', 'value')->withCount('ratings');
                 },
-                'favorite',
                 'product.vote',
                 'product.brand',
                 'lowestPrice'
@@ -81,9 +79,41 @@ final class Variant extends Model
                     $productQuery->where('name', 'like', '%' . $request->get('search') . '%');
                 });
             })
-            ->orderBy($sort, $order)
-            ->groupBy('variants.product_id', 'variants.id', 'variants.color_id', 'variants.url', 'variants.price', 'variants.images', 'variants.published', 'variants.thumbnail', 'variants.created_at', 'variants.updated_at')
-            ->simplePaginate(12);
+            ->published()
+            ->orderBy($sort, $order);
+
+        if ($user) {
+            $query->with('isFavorite');
+        }
+
+        return $query->simplePaginate(12);
+    }
+
+    public static function getProduct($id)
+    {
+        $user = auth()->user();
+
+        $query = Variant::query()
+            ->where('id', $id)
+            ->with([
+                'product' => function ($query): void {
+                    $query->withAvg('ratings', 'value')
+                        ->withCount('ratings')
+                        ->with(['variants' => function ($query): void {
+                            $query->where('published', true)
+                                ->with('color');
+                        }]);
+                },
+                'options.size',
+                'lowestPrice',
+            ])
+            ->published();
+
+        if ($user) {
+            $query->with('isFavorite');
+        }
+
+        return $query->firstOrFail();
     }
 
     public function options(): HasMany
@@ -117,6 +147,11 @@ final class Variant extends Model
     }
 
     public function favorite(): HasOne
+    {
+        return $this->hasOne(Favorite::class);
+    }
+
+    public function isFavorite(): HasOne
     {
         return $this->hasOne(Favorite::class)->where('user_id', auth()->id());
     }

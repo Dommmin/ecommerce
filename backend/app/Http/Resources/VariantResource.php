@@ -6,7 +6,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Str;
+use Illuminate\Support\Str;
 
 final class VariantResource extends JsonResource
 {
@@ -24,10 +24,14 @@ final class VariantResource extends JsonResource
             'main_photo' => $this->main_photo,
             'images' => $this->when(Str::contains($request->url(), '/api/products/'), fn() => json_decode($this->images, true) ?? []),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-            'favorite' => $this->favorite ?? false,
-            'lowest_price' => $this->lowestPrice ? $this->lowestPrice->price : $this->price,
+            'favorite' => auth()->user() ? $this->isFavorite : false,
+            'lowest_price' => $this->whenLoaded('lowestPrice', fn() => $this->lowestPrice->price) ?? $this->price,
             'product' => $this->whenLoaded('product', fn() => new ProductResource($this->product)),
-            'options' => $this->whenLoaded('options', fn() => OptionResource::collection($this->options)),
+            'size' => $this->whenLoaded('size', fn() => new SizeResource($this->size)),
+            'options' => $this->whenLoaded('options', fn() =>
+                $this->when($request->is('api/products/*'), function () {
+                    return OptionResource::collection($this->options);
+                })),
             'color' => $this->whenLoaded('color', fn() => new ColorResource($this->color)),
         ];
     }

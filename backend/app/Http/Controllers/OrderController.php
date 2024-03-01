@@ -9,7 +9,7 @@ use App\Models\Cart;
 use App\Models\Orders\Item;
 use App\Models\Orders\Order;
 use App\Models\Shipment;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 final class OrderController extends Controller
 {
@@ -25,15 +25,21 @@ final class OrderController extends Controller
 
     public function store()
     {
-        $cartItems = Cart::where('user_id', auth()->id());
+        $user = auth()->user();
+
+        if (!$user) {
+            return response('Unauthorized', 401);
+        }
+
+        $cartItems = Cart::where('user_id', $user->id);
         $order = new Order();
 
-        DB::transaction(function () use ($cartItems, $order): void {
-            $order->user_id = auth()->id();
+        DB::transaction(function () use ($cartItems, $order, $user): void {
+            $order->user_id = $user->id;
             $order->shipment_id = Shipment::pluck('id')->random();
             $order->save();
 
-            collect($cartItems->get())->each(function ($cartItem) use ($order): void {
+            collect($cartItems->with('variant', 'option')->get())->each(function ($cartItem) use ($order): void {
                 Item::create([
                     'order_id' => $order->id,
                     'option_id' => $cartItem->option_id,
@@ -54,7 +60,8 @@ final class OrderController extends Controller
             'items.option.size',
         ]);
 
-        dispatch(new SendOrderCompleteEmail(auth()->user(), $order));
+        dispatch(new SendOrderCompleteEmail($user, $order));
+
 
         return response('Order created successfully', 201);
     }

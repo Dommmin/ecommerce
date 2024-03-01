@@ -30,6 +30,8 @@ export default function Login() {
         await setIsLoading(false);
     };
 
+    console.log(status);
+
     const handleLoginAsAdmin = async (event) => {
         event.preventDefault();
 
@@ -56,7 +58,8 @@ export default function Login() {
 
     return (
         <div className="flex items-center justify-center min-h-screen max-w-lg mx-auto">
-            <div className="flex flex-col items-center justify-center w-full space-y-4 card bg-white dark:bg-gray-800 shadow-xl py-12">
+            <div
+                className="flex flex-col items-center justify-center w-full space-y-4 card bg-white dark:bg-gray-800 shadow-xl py-12">
                 <h1 className="font-bold text-3xl text-gray-200">Login to your account</h1>
                 <label className="form-control w-full max-w-md">
                     <div className="label">
@@ -91,8 +94,19 @@ export default function Login() {
                         </div>
                     )}
                 </label>
+                <div className="flex w-full max-w-md">
+                    <label className="label cursor-pointer">
+                        <span className="label-text">Remember me</span>
+                        <input
+                            checked={shouldRemember}
+                            onChange={(event) => setShouldRemember(event.target.checked)}
+                            type="checkbox" defaultChecked
+                            className="ml-2 checkbox checkbox-primary"
+                        />
+                    </label>
+                </div>
                 <div>
-                    Don't have an account?{' '}
+                    <span>{"Don't have an account? "}</span>
                     <Link className="link link-hover text-error font-bold tracking-wide" to="/register">
                         Register
                     </Link>

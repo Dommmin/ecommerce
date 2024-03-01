@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//\Illuminate\Support\Facades\Auth::loginUsingId(2);
+
 Route::middleware(['auth:sanctum'])->get('/user', fn(Request $request) => $request->user());
 
 Route::post('cart/{cart}/update-quantity', [CartController::class, 'updateQuantity']);
