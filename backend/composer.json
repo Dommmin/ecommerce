@@ -9,6 +9,7 @@
         "guzzlehttp/guzzle": "^7.8",
         "intervention/image": "^3.4",
         "laravel/framework": "^10.10",
+        "laravel/horizon": "^5.23",
         "laravel/pulse": "^1.0@beta",
         "laravel/sanctum": "^3.3",
         "laravel/telescope": "^4.17",

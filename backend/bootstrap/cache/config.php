@@ -11,7 +11,7 @@
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:O3hjMEH7GfVM8rzwObArVty6RoDCa5rqWFPnM4UPvpI=',
+    'key' => 'base64:Z6k57qWDT14nTodUfpUq4A+yjkdle4BCgFANid5jN3c=',
     'cipher' => 'AES-256-CBC',
     'maintenance' => 
     array (
@@ -44,8 +44,9 @@
       22 => 'App\\Providers\\AppServiceProvider',
       23 => 'App\\Providers\\AuthServiceProvider',
       24 => 'App\\Providers\\EventServiceProvider',
-      25 => 'App\\Providers\\RouteServiceProvider',
-      26 => 'App\\Providers\\TelescopeServiceProvider',
+      25 => 'App\\Providers\\HorizonServiceProvider',
+      26 => 'App\\Providers\\RouteServiceProvider',
+      27 => 'App\\Providers\\TelescopeServiceProvider',
     ),
     'aliases' => 
     array (
@@ -363,6 +364,19 @@
         'port' => '6379',
         'database' => '1',
       ),
+      'horizon' => 
+      array (
+        'url' => NULL,
+        'host' => 'redis',
+        'username' => NULL,
+        'password' => NULL,
+        'port' => '6379',
+        'database' => '0',
+        'options' => 
+        array (
+          'prefix' => 'laravel_horizon:',
+        ),
+      ),
     ),
   ),
   'filesystems' => 
@@ -416,6 +430,82 @@
       'threads' => 1,
       'time' => 4,
       'verify' => true,
+    ),
+  ),
+  'horizon' => 
+  array (
+    'domain' => NULL,
+    'path' => 'horizon',
+    'use' => 'default',
+    'prefix' => 'laravel_horizon:',
+    'middleware' => 
+    array (
+      0 => 'web',
+    ),
+    'waits' => 
+    array (
+      'redis:default' => 60,
+    ),
+    'trim' => 
+    array (
+      'recent' => 60,
+      'pending' => 60,
+      'completed' => 60,
+      'recent_failed' => 10080,
+      'failed' => 10080,
+      'monitored' => 10080,
+    ),
+    'silenced' => 
+    array (
+    ),
+    'metrics' => 
+    array (
+      'trim_snapshots' => 
+      array (
+        'job' => 24,
+        'queue' => 24,
+      ),
+    ),
+    'fast_termination' => false,
+    'memory_limit' => 64,
+    'defaults' => 
+    array (
+      'supervisor-1' => 
+      array (
+        'connection' => 'redis',
+        'queue' => 
+        array (
+          0 => 'default',
+        ),
+        'balance' => 'auto',
+        'autoScalingStrategy' => 'time',
+        'maxProcesses' => 1,
+        'maxTime' => 0,
+        'maxJobs' => 0,
+        'memory' => 128,
+        'tries' => 1,
+        'timeout' => 60,
+        'nice' => 0,
+      ),
+    ),
+    'environments' => 
+    array (
+      'production' => 
+      array (
+        'supervisor-1' => 
+        array (
+          'maxProcesses' => 10,
+          'balanceMaxShift' => 1,
+          'balanceCooldown' => 3,
+        ),
+      ),
+      'local' => 
+      array (
+        'supervisor-1' => 
+        array (
+          'maxProcesses' => 3,
+        ),
+      ),
     ),
   ),
   'logging' => 
@@ -671,7 +761,7 @@
       ),
       'Laravel\\Pulse\\Recorders\\Servers' => 
       array (
-        'server_name' => 'fb85add97bc5',
+        'server_name' => '5af31d4727f2',
         'directories' => 
         array (
           0 => '/',
