@@ -1,17 +1,8 @@
 version: '3.8'
 services:
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
-    networks:
-      - app
-    volumes:
-      - redis-data:/data
-
   db:
     image: mariadb:10.6
-    tty: true
+    restart: unless-stopped
     ports:
       - "3306:3306"
     environment:
@@ -21,27 +12,40 @@ services:
       MYSQL_ROOT_PASSWORD: secret
       SERVICE_TAGS: dev
       SERVICE_NAME: db
+    healthcheck:
+      test: mysql -h localhost -u root -psecret -e 'SELECT version();'
+      start_period: 5s
+      interval: 15s
+      timeout: 5s
+      retries: 5
     volumes:
-      - mysql-data:/var/lib/mysql
+      - db-data:/var/lib/mysql
     networks:
       - app
+
+  redis:
+    image: redis:latest
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    networks:
+      - app
+    volumes:
+      - redis-data:/data
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    environment:
-      DB_HOST: db
-      DB_DATABASE: laravel
-      DB_USERNAME: root
-      DB_PASSWORD: secret
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app/backend
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
     networks:
       - app
 
@@ -68,7 +72,6 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    restart: always
     ports:
       - "8081:80"
     environment:
@@ -85,4 +88,4 @@ networks:
 
 volumes:
   redis-data:
-  mysql-data:
+  db-data:

@@ -18,7 +18,6 @@ RUN docker-php-ext-install gd pdo pdo_mysql zip
 RUN pecl install redis \
     && docker-php-ext-enable redis
 
-
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
