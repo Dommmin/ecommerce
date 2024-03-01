@@ -95,8 +95,6 @@ function Index() {
         );
     }
 
-    console.log(products);
-
     const handleNextPage = () => {
         if (products.links.next) {
             setPage(page + 1);

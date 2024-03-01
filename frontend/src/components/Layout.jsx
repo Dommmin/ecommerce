@@ -21,8 +21,6 @@ function Layout() {
         await logout();
     };
 
-    console.log(user);
-
     useEffect(() => {
         themeChange(false);
     }, []);

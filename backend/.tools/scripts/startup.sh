@@ -1,6 +1,8 @@
 #!/bin/sh
 
-#dockerize -wait tcp://db:3306 -timeout 60s
+#composer install --no-dev --optimize-autoloader --no-scripts
 
-#php artisan migrate
+php artisan key:generate
+php artisan migrate --seed
+php artisan config:cache
 php artisan serve --host=0.0.0.0 --port=8000

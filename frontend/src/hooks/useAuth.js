@@ -16,7 +16,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .get('/api/user')
             .then((res) => res.data)
             .catch((error) => {
-                if (error.response.status !== 409) throw error;
+                if (error.response.status !== 409) {throw error;}
 
                 navigate('/verify-email');
             }),
@@ -36,7 +36,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
                 mutate();
             })
             .catch((error) => {
-                if (error.response.status !== 422) throw error;
+                if (error.response.status !== 422) {throw error;}
 
                 setErrors(error.response.data.errors);
             });
@@ -55,7 +55,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
                 mutate();
             })
             .catch((error) => {
-                if (error.response.status !== 422) throw error;
+                if (error.response.status !== 422) {throw error;}
 
                 setErrors(error.response.data.errors);
             });
@@ -71,7 +71,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .post('/forgot-password', { email })
             .then((response) => setStatus(response.data.status))
             .catch((error) => {
-                if (error.response.status !== 422) throw error;
+                if (error.response.status !== 422) {throw error;}
 
                 setErrors(error.response.data.errors);
             });
@@ -87,7 +87,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .post('/reset-password', { token: navigate?.query?.token, ...props })
             .then((response) => navigate('/login?reset=' + btoa(response.data.status)))
             .catch((error) => {
-                if (error.response.status !== 422) throw error;
+                if (error.response.status !== 422) {throw error;}
 
                 setErrors(error.response.data.errors);
             });
@@ -98,6 +98,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     };
 
     const logout = async () => {
+        await csrf();
+
         if (!error) {
             await axios.post('/logout').then(() => {
                 localStorage.removeItem('access_token');
@@ -109,9 +111,9 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     };
 
     useEffect(() => {
-        if (middleware === 'guest' && redirectIfAuthenticated && user?.email) navigate(redirectIfAuthenticated);
-        if (window.location.pathname === '/verify-email' && user?.email_verified_at) navigate(redirectIfAuthenticated);
-        if (middleware === 'auth' && error) logout();
+        if (middleware === 'guest' && redirectIfAuthenticated && user?.email) {navigate(redirectIfAuthenticated);}
+        if (window.location.pathname === '/verify-email' && user?.email_verified_at) {navigate(redirectIfAuthenticated);}
+        if (middleware === 'auth' && error) {logout();}
     }, [user, error]);
 
     return {
