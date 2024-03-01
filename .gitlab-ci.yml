@@ -1,37 +1,18 @@
+image: docker:latest
+services:
+  - docker:dind
+
 stages:
   - build
   - test
 
 variables:
-  # Define environment variables such as database configurations
-  DB_CONNECTION: mysql
-  DB_HOST: mysql
-  DB_DATABASE: test_database
-  DB_USERNAME: root
-  DB_PASSWORD: secret
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:latest
 
-services:
-  - mysql:latest
-
-before_script:
-  - apt-get update -qy
-  - apt-get install -y unzip
-  - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-  - cp .env.example .env
-  - composer install --no-ansi --no-interaction --no-progress --no-scripts --no-suggest --optimize-autoloader
-
-cache:
-  paths:
-    - vendor/
-
-build:
+build_job:
+  stage: build
   script:
-    - php artisan key:generate
-    - php artisan config:clear
-    - php artisan config:cache
-    - php artisan migrate --env=testing
-    - php artisan db:seed --env=testing
-
-test:
-  script:
-    - vendor/bin/phpunit
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+    - docker logout
