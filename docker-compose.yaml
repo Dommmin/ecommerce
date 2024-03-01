@@ -26,6 +26,11 @@ services:
   redis:
     image: redis:latest
     command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     ports:
       - "6379:6379"
     networks:
@@ -81,6 +86,26 @@ services:
       - app
     depends_on:
       - db
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    ports:
+      - "8080:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - app
+
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.42.0-jammy
+    volumes:
+      - ./tests:/tests
+    command: npx playwright test /e2e
+    depends_on:
+      - frontend
 
 networks:
   app:
