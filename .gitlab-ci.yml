@@ -1,18 +1,34 @@
-image: docker:latest
-services:
-  - docker:dind
-
 stages:
-  - build
+  - build_backend
+  - build_frontend
   - test
 
 variables:
-  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:latest
+  BACKEND_IMAGE: ecommerce/backend:latest
+  FRONTEND_IMAGE: ecommerce/frontend:latest
 
-build_job:
-  stage: build
+before_script:
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+build_backend:
+  stage: build_backend
   script:
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    - docker build -t $CONTAINER_TEST_IMAGE .
-    - docker push $CONTAINER_TEST_IMAGE
-    - docker logout
+    - docker-compose -f docker-compose.yml build backend
+    - docker tag backend $BACKEND_IMAGE
+    - docker push $BACKEND_IMAGE
+
+build_frontend:
+  stage: build_frontend
+  script:
+    - docker-compose -f docker-compose.yml build frontend
+    - docker tag frontend $FRONTEND_IMAGE
+    - docker push $FRONTEND_IMAGE
+
+test:
+  stage: test
+  script:
+    - docker-compose -f docker-compose.yml up -d
+    - docker-compose exec backend vendor/bin/phpunit
+    - docker-compose exec frontend npm test
+  after_script:
+    - docker-compose down
