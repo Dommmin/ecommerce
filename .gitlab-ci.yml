@@ -27,6 +27,7 @@ stages:
     - docker-php-ext-configure pcntl --enable-pcntl
     - docker-php-ext-install pcntl zip
     # install composer dependencies
+    - composer update --ignore-platform-reqs
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --ignore-platform-reqs
     # Copy over example configuration.
     # Don't forget to set the database config in .env.example correctly
