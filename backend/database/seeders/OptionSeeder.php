@@ -16,15 +16,20 @@ final class OptionSeeder extends Seeder
      */
     public function run(): void
     {
-        $sizes = Size::pluck('id');
+        $sizes = Size::pluck('id')->toArray();
+        $variants = Variant::all();
 
-        Variant::each(function ($variant) use ($sizes): void {
+        $options = [];
+
+        foreach ($variants as $variant) {
             foreach ($sizes as $size) {
-                Option::factory()->create([
+                $options[] = [
                     'variant_id' => $variant->id,
                     'size_id' => $size,
-                ]);
+                ];
             }
-        });
+        }
+
+        Option::insert($options);
     }
 }
