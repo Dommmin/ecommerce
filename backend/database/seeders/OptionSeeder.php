@@ -18,6 +18,7 @@ final class OptionSeeder extends Seeder
     {
         $sizes = Size::pluck('id')->toArray();
         $variants = Variant::all();
+        $timestamp = now();
 
         $options = [];
 
@@ -26,6 +27,9 @@ final class OptionSeeder extends Seeder
                 $options[] = [
                     'variant_id' => $variant->id,
                     'size_id' => $size,
+                    'quantity' => rand(1, 10),
+                    'created_at' => $timestamp,
+                    'updated_at' => $timestamp,
                 ];
             }
         }
