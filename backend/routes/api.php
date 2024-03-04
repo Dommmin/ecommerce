@@ -22,8 +22,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//\Illuminate\Support\Facades\Auth::loginUsingId(2);
-
 Route::middleware(['auth:sanctum'])->get('/user', fn(Request $request) => $request->user());
 
 Route::post('cart/{cart}/update-quantity', [CartController::class, 'updateQuantity']);
@@ -34,9 +32,12 @@ Route::get('/feature-products', [ProductController::class, 'featureProducts']);
 Route::apiResource('products', ProductController::class)->names([
     'show' => 'products.show',
 ]);
-Route::apiResource('favorites', FavoriteController::class);
-Route::apiResource('orders', OrderController::class);
-Route::apiResource('ratings', RatingController::class);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('favorites', FavoriteController::class);
+    Route::apiResource('orders', OrderController::class);
+    Route::apiResource('ratings', RatingController::class);
+});
 
 Route::prefix('admin')->group(function (): void {
     Route::middleware('admin')->group(function (): void {
@@ -47,12 +48,12 @@ Route::prefix('admin')->group(function (): void {
         Route::post('products/import', [Admin\ProductController::class, 'import'])->name('products.import');
         Route::apiResource('colors', Admin\ColorController::class);
         Route::apiResource('sizes', Admin\SizeController::class);
-        Route::apiResource('products', Admin\ProductController::class)->names(['show' => 'admin.products.show']);
+        Route::apiResource('products', Admin\ProductController::class)->names('admin.products.');
         Route::apiResource('categories', Admin\CategoryController::class)->except('index');
         Route::apiResource('brands', Admin\BrandController::class)->except('index');
         Route::apiResource('variants', Admin\VariantController::class);
         Route::apiResource('users', Admin\UserController::class);
-        Route::apiResource('orders', Admin\OrderController::class);
+        Route::apiResource('orders', Admin\OrderController::class)->names('admin.orders.');
     });
 
     Route::apiResource('categories', Admin\CategoryController::class)->only('index');
