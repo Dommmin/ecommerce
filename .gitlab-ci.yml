@@ -38,7 +38,6 @@ stages:
     # Generate an application key. Re-cache.
     - php artisan key:generate
     - php artisan key:generate --env=testing
-    - php artisan cache:clear
     - php artisan config:cache
     # Run database migrations.
     - php artisan migrate:fresh
