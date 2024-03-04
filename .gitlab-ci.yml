@@ -22,6 +22,10 @@ stages:
     - cd ./backend
     - curl -sS https://getcomposer.org/installer | php
     - mv composer.phar /usr/local/bin/composer
+    # Install pcntl and zip extensions
+    - apt-get update && apt-get install -y libzip-dev zip
+    - docker-php-ext-configure pcntl --enable-pcntl
+    - docker-php-ext-install pcntl zip
     # install composer dependencies
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --ignore-platform-reqs
     # Copy over example configuration.
