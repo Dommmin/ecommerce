@@ -31,8 +31,7 @@ stages:
     # Install MySQL driver
     - docker-php-ext-install pdo_mysql
     # install composer dependencies
-    - composer update --ignore-platform-reqs
-    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --ignore-platform-reqs
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     # Copy over example configuration.
     # Don't forget to set the database config in .env.example correctly
     - cp .env.example .env
