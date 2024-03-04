@@ -18,30 +18,22 @@ stages:
   services:
     - mysql:latest
   before_script:
-    # Change to the backend directory
     - cd ./backend
     - curl -sS https://getcomposer.org/installer | php
     - mv composer.phar /usr/local/bin/composer
-    # Install pcntl, zip and redis extensions
     - apt-get update && apt-get install -y libzip-dev zip
     - docker-php-ext-configure pcntl --enable-pcntl
     - docker-php-ext-install pcntl zip
-    # Install MySQL driver
     - docker-php-ext-install pdo_mysql
-    # install composer dependencies
-    # Copy over example configuration.
-    # Don't forget to set the database config in .env.example correctly
     - cp .env.example .env
-    # Generate an application key. Re-cache.
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     - php artisan key:generate
     - php artisan key:generate --env=testing
     - php artisan config:cache
     - php artisan config:cache --env=testing
     - php artisan optimize:clear
     - php artisan optimize:clear --env=testing
-    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     - chmod -R 755 .
-    # Run database migrations.
     - php artisan migrate:fresh
 
 check:
