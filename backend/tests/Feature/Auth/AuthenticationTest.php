@@ -22,7 +22,7 @@ final class AuthenticationTest extends TestCase
         ]);
 
         $this->assertAuthenticated();
-        $response->assertNoContent();
+        $response->assertStatus(201);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
