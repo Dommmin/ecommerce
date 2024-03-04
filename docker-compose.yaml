@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   db:
     image: mariadb:10.6
@@ -51,6 +51,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+    tty: true
     networks:
       - app
 
