@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Log;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -109,9 +110,9 @@ final class Variant extends Model
             ])
             ->published();
 
-        if ($user) {
-            $query->with('isFavorite');
-        }
+//        if ($user) {
+//            $query->with('isFavorite');
+//        }
 
         return $query->firstOrFail();
     }
@@ -153,7 +154,7 @@ final class Variant extends Model
 
     public function isFavorite(): HasOne
     {
-        return $this->hasOne(Favorite::class)->where('user_id', auth()->id());
+        return $this->favorite()->where('user_id', auth()->id());
     }
 
     public function lowestPrice(): HasOne
@@ -165,7 +166,11 @@ final class Variant extends Model
     {
         $images = json_decode($this->images, true);
 
-        return $images[0];
+        if (count($images) > 0) {
+            return $images[0];
+        }
+
+        return 'https://miro.medium.com/v2/resize:fit:600/format:webp/0*jGmQzOLaEobiNklD';
     }
 
     public function getSlugOptions(): SlugOptions
