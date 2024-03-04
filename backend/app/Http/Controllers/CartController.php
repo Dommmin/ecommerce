@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CartStoreRequest;
 use App\Models\Cart;
 use App\Models\Products\Option;
 use Exception;
@@ -23,19 +24,18 @@ final class CartController extends Controller
     /**
      * @throws Exception
      */
-    public function store(Request $request)
+    public function store(CartStoreRequest $request)
     {
-        $variantId = $request->variant_id;
-        $optionId = $request->option_id;
+        $validatedData = $request->validated();
 
-        $cart = Cart::query()
-            ->where('user_id', auth()->id())
-            ->where('variant_id', $variantId)
-            ->where('option_id', $optionId)
-            ->first();
+        $cart = Cart::firstWhere([
+            'user_id' => auth()->id(),
+            'variant_id' => $validatedData['variant_id'],
+            'option_id' => $validatedData['option_id']
+        ]);
 
         if ($cart) {
-            $option = Option::where('id', $optionId)->first();
+            $option = Option::where('id', $validatedData['option_id'])->first();
 
             if ($cart->quantity < $option->quantity) {
                 $cart->update(['quantity' => $cart->quantity + 1]);
@@ -45,11 +45,7 @@ final class CartController extends Controller
                 ]);
             }
         } else {
-            Cart::create([
-                'user_id'    => auth()->id(),
-                'variant_id' => $variantId,
-                'option_id'  => $optionId,
-            ]);
+            Cart::create($validatedData + ['user_id' => auth()->id()]);
         }
 
         return response()->json([

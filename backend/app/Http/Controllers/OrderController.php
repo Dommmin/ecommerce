@@ -62,7 +62,6 @@ final class OrderController extends Controller
 
         dispatch(new SendOrderCompleteEmail($user, $order));
 
-
         return response('Order created successfully', 201);
     }
 }
