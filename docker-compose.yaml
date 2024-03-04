@@ -102,7 +102,7 @@ services:
   playwright:
     image: mcr.microsoft.com/playwright:v1.42.0-jammy
     volumes:
-      - ./tests:/tests
+      - ./frontend/tests:/tests
     command: npx playwright test /e2e
     depends_on:
       - frontend
