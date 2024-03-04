@@ -40,6 +40,9 @@ stages:
     - php artisan key:generate --env=testing
     - php artisan config:cache
     - php artisan config:cache --env=testing
+    - php artisan optimize:clear
+    - php artisan optimize:clear --env=testing
+    - composer dump-autoload
     - chmod -R 755 .
     # Run database migrations.
     - php artisan migrate:fresh
