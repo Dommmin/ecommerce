@@ -29,7 +29,6 @@ stages:
     # Install MySQL driver
     - docker-php-ext-install pdo_mysql
     # install composer dependencies
-    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     # Copy over example configuration.
     # Don't forget to set the database config in .env.example correctly
     - cp .env.example .env
@@ -40,7 +39,7 @@ stages:
     - php artisan config:cache --env=testing
     - php artisan optimize:clear
     - php artisan optimize:clear --env=testing
-    - composer dump-autoload
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     - chmod -R 755 .
     # Run database migrations.
     - php artisan migrate:fresh
