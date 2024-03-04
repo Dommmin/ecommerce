@@ -14,7 +14,7 @@ final class Cart extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'variant_id', 'option_id', 'quantity'];
+    protected $guarded = [];
 
     public function variant(): BelongsTo
     {
