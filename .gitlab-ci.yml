@@ -20,6 +20,8 @@ stages:
   before_script:
     # Change to the backend directory
     - cd ./backend
+    - curl -sS https://getcomposer.org/installer | php
+    - mv composer.phar /usr/local/bin/composer
     # install composer dependencies
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress
     # Copy over example configuration.
