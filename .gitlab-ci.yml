@@ -39,6 +39,7 @@ stages:
     - php artisan key:generate
     - php artisan key:generate --env=testing
     - php artisan config:cache
+    - php artisan config:cache --env=testing
     - chmod -R 755 .
     # Run database migrations.
     - php artisan migrate:fresh
