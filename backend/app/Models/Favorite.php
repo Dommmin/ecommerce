@@ -13,7 +13,7 @@ final class Favorite extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'variant_id'];
+    protected $guarded = [];
 
     public function variant(): BelongsTo
     {

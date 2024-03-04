@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FavoriteStoreRequest;
 use App\Models\Favorite;
-use Illuminate\Http\Request;
 
 final class FavoriteController extends Controller
 {
@@ -14,12 +14,9 @@ final class FavoriteController extends Controller
         return Favorite::where('user_id', auth()->id())->with('variant.product')->get();
     }
 
-    public function store(Request $request)
+    public function store(FavoriteStoreRequest $request)
     {
-        Favorite::create([
-            'user_id' => auth()->id(),
-            'variant_id' => $request->get('variant_id')
-        ]);
+        Favorite::create($request->validated() + ['user_id' => auth()->id()]);
 
         return response()->noContent();
     }
