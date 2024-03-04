@@ -17,6 +17,17 @@
       'Horizon' => 'Laravel\\Horizon\\Horizon',
     ),
   ),
+  'laravel/octane' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Octane\\OctaneServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Octane' => 'Laravel\\Octane\\Facades\\Octane',
+    ),
+  ),
   'laravel/pulse' => 
   array (
     'providers' => 
