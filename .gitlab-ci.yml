@@ -23,7 +23,7 @@ stages:
     - curl -sS https://getcomposer.org/installer | php
     - mv composer.phar /usr/local/bin/composer
     # install composer dependencies
-    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --ignore-platform-reqs
     # Copy over example configuration.
     # Don't forget to set the database config in .env.example correctly
     - cp .env.example .env
