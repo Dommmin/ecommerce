@@ -39,6 +39,7 @@ stages:
     - php artisan key:generate
     - php artisan key:generate --env=testing
     - php artisan config:cache
+    - chmod -R 755 /builds/Dommmin/ecommerce/backend/storage/framework
     # Run database migrations.
     - php artisan migrate:fresh
 
