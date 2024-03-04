@@ -38,6 +38,7 @@ final class VariantFactory extends Factory
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'thumbnail' => '',
+            'images' => '[]',
         ];
     }
 }
