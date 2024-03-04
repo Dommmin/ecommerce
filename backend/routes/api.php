@@ -50,7 +50,6 @@ Route::prefix('admin')->group(function (): void {
         Route::apiResource('products', Admin\ProductController::class)->names(['show' => 'admin.products.show']);
         Route::apiResource('categories', Admin\CategoryController::class)->except('index');
         Route::apiResource('brands', Admin\BrandController::class)->except('index');
-        ;
         Route::apiResource('variants', Admin\VariantController::class);
         Route::apiResource('users', Admin\UserController::class);
         Route::apiResource('orders', Admin\OrderController::class);
