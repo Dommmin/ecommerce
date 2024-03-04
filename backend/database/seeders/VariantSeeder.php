@@ -52,7 +52,7 @@ final class VariantSeeder extends Seeder
                 Variant::factory()->create([
                     'product_id' => $product->id,
                     'color_id' => $color,
-                    'price' => $product->price * 0.8,
+                    'price' => (int)$product->price * 0.8,
                     'images' => json_encode($images),
                 ]);
             }
