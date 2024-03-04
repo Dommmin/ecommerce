@@ -28,6 +28,8 @@ stages:
     - docker-php-ext-enable redis
     - docker-php-ext-configure pcntl --enable-pcntl
     - docker-php-ext-install pcntl zip
+    # Install MySQL driver
+    - docker-php-ext-install pdo_mysql
     # install composer dependencies
     - composer update --ignore-platform-reqs
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --ignore-platform-reqs
