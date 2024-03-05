@@ -54,9 +54,11 @@ final class VariantController extends Controller
 
     public function update(Request $request, Variant $variant)
     {
+        // TODO: Implement update() method.
+
         $variant->fill([
-            'price' => $request->price,
-            'published' => $request->published ? 1 : 0,
+            'price' => (float)$request->price,
+            'published' => (bool)$request->published,
         ]);
 
         $variant->save();
