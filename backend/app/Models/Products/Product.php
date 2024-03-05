@@ -7,6 +7,7 @@ namespace App\Models\Products;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Rating;
+use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 final class Product extends Model
 {
     use HasFactory;
+    use Auditable;
 
     protected $guarded = [];
 

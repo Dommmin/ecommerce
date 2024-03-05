@@ -24,6 +24,11 @@ final class ProductController
             ->simplePaginate(10);
     }
 
+    public function show(Product $product)
+    {
+        return $product->load('audits');
+    }
+
     public function store(ProductStoreRequest $request)
     {
         return Product::create($request->validated());

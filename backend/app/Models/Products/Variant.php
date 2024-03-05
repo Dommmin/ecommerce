@@ -7,12 +7,12 @@ namespace App\Models\Products;
 use App\Models\Color;
 use App\Models\Favorite;
 use App\Models\Price;
+use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Support\Facades\Log;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -20,6 +20,7 @@ final class Variant extends Model
 {
     use HasFactory;
     use HasSlug;
+    use Auditable;
 
     protected $guarded = [];
     protected $appends = ['main_photo'];
@@ -110,9 +111,9 @@ final class Variant extends Model
             ])
             ->published();
 
-//        if ($user) {
-//            $query->with('isFavorite');
-//        }
+        if ($user) {
+            $query->with('isFavorite');
+        }
 
         return $query->firstOrFail();
     }
