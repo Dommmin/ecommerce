@@ -30,8 +30,6 @@ export default function Login() {
         await setIsLoading(false);
     };
 
-    console.log(status);
-
     const handleLoginAsAdmin = async (event) => {
         event.preventDefault();
 
@@ -100,7 +98,7 @@ export default function Login() {
                         <input
                             checked={shouldRemember}
                             onChange={(event) => setShouldRemember(event.target.checked)}
-                            type="checkbox" defaultChecked
+                            type="checkbox"
                             className="ml-2 checkbox checkbox-primary"
                         />
                     </label>
