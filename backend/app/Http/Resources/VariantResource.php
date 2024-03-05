@@ -24,7 +24,9 @@ final class VariantResource extends JsonResource
             'main_photo' => $this->main_photo,
             'images' => $this->when(Str::contains($request->url(), '/api/products/'), fn() => json_decode($this->images, true) ?? []),
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-            'favorite' => auth()->user() ? $this->isFavorite : false,
+            'favorite' => $this->whenLoaded('isFavorite', function () {
+                return $this->isFavorite;
+            }),
             'lowest_price' => $this->whenLoaded('lowestPrice', fn() => $this->lowestPrice->price) ?? $this->price,
             'product' => $this->whenLoaded('product', fn() => new ProductResource($this->product)),
             'size' => $this->whenLoaded('size', fn() => new SizeResource($this->size)),
