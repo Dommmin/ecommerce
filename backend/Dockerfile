@@ -1,12 +1,17 @@
+#FROM unit:php8.2
+#FROM dunglas/frankenphp:1.0.3-php8.2 as base
+#ENV FRANKENPHP_CONFIG="worker ./public/index.php"
+#FROM openswoole/swoole:php8.2
+
+
 # Use an official PHP runtime as a parent image
-FROM dunglas/frankenphp:1.0.3-php8.2 as base
-ENV FRANKENPHP_CONFIG="worker ./public/index.php"
+FROM php:8.2-fpm
 
 # Set working directory
 WORKDIR /app/backend
 
 # Copy php.ini to the docker image
-COPY php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
+COPY .docker/php.ini /usr/local/etc/php/conf.d/docker-php-config.ini
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -27,7 +32,13 @@ RUN apt-get update && apt-get install -y \
     libmcrypt-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    libicu-dev
+    libicu-dev \
+    curl \
+    gnupg
+
+# Install Node.js and npm
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
+RUN apt-get install -y nodejs
 
 # Install PHP extensions
 RUN docker-php-ext-install zip pdo_mysql pdo_pgsql pgsql \
@@ -37,8 +48,8 @@ RUN docker-php-ext-install zip pdo_mysql pdo_pgsql pgsql \
     && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql zip bcmath pcntl sockets
 
 # Install PECL extensions
-RUN pecl install xdebug pcov redis \
-    && docker-php-ext-enable xdebug pcov redis
+RUN pecl install xdebug pcov redis swoole \
+    && docker-php-ext-enable xdebug pcov redis swoole
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -52,14 +63,19 @@ COPY composer.json composer.lock ./
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts --ignore-platform-reqs
 
+# Install npm dependencies
+RUN npm install --save-dev chokidar
+
 # Copy the rest of the application code
-COPY . .
+COPY .. .
 
 # Expose port 8000 for the application
 EXPOSE 8000
 
 # Copy scripts
-ADD .tools/scripts/ /srv/
+ADD .tools/scripts /srv/
+
+RUN chmod +x /srv/startup.sh
 
 # Set the entrypoint script
 ENTRYPOINT ["/bin/sh", "/srv/startup.sh"]

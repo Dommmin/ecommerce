@@ -4,14 +4,14 @@
     'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://localhost:8000',
+    'url' => 'http://localhost',
     'frontend_url' => 'http://localhost:3000',
     'asset_url' => NULL,
     'timezone' => 'UTC',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
-    'key' => 'base64:IPgdOclgGMG4X1CcMiHoYv2rzdF3mLLaXS5E1G2Ykj8=',
+    'key' => 'base64:dnvQeoopkJl8ALgbvv4/hqhf7vJsCP7BthoQHNNtaN8=',
     'cipher' => 'AES-256-CBC',
     'maintenance' => 
     array (
@@ -394,7 +394,7 @@
       array (
         'driver' => 'local',
         'root' => '/app/backend/storage/app/public',
-        'url' => 'http://localhost:8000/storage',
+        'url' => 'http://localhost/storage',
         'visibility' => 'public',
         'throw' => false,
       ),
@@ -684,7 +684,7 @@
   ),
   'octane' => 
   array (
-    'server' => 'frankenphp',
+    'server' => 'swoole',
     'https' => false,
     'listeners' => 
     array (
@@ -952,7 +952,7 @@
       ),
       'Laravel\\Pulse\\Recorders\\Servers' => 
       array (
-        'server_name' => '9825b162a3ab',
+        'server_name' => '9bcd2359852d',
         'directories' => 
         array (
           0 => '/',
