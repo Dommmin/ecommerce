@@ -3,3 +3,4 @@ backend/storage/logs/laravel.log
 backend/storage/framework/cache/*
 backend/storage/framework/views/*
 backend/.env.testing
+backend/storage/logs/octane-server-state.json
