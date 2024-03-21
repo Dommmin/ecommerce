@@ -24,7 +24,9 @@ final class SendOrderCompleteEmail implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(protected User $user, protected Order $order) {}
+    public function __construct(protected User $user, protected Order $order)
+    {
+    }
 
     /**
      * Execute the job.

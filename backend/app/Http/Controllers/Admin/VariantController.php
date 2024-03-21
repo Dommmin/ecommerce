@@ -57,8 +57,8 @@ final class VariantController extends Controller
         // TODO: Implement update() method.
 
         $variant->fill([
-            'price' => (float)$request->price,
-            'published' => (bool)$request->published,
+            'price' => (float) $request->price,
+            'published' => (bool) $request->published,
         ]);
 
         $variant->save();

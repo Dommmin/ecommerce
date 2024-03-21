@@ -12,9 +12,9 @@ final class RatingController extends Controller
     public function store(Request $request)
     {
         Rating::create([
-            'user_id'    => auth()->id(),
+            'user_id' => auth()->id(),
             'product_id' => $request->product_id,
-            'value'      => $request->value
+            'value' => $request->value,
         ]);
 
         return response()->json('You rated this product!');

@@ -19,7 +19,7 @@ final class OptionResource extends JsonResource
         return [
             'id' => $this->id,
             'quantity' => $this->quantity,
-            'size' => $this->whenLoaded('size', fn() => new SizeResource($this->size))
+            'size' => $this->whenLoaded('size', fn () => new SizeResource($this->size)),
         ];
     }
 }

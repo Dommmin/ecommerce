@@ -17,14 +17,16 @@ final class PriceChanged extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      */
-    public function __construct(private readonly Variant $variant) {}
+    public function __construct(private readonly Variant $variant)
+    {
+    }
 
     /**
      * Get the notification's delivery channels.
      *
      * @return array<int, string>
      */
-    public function via(object $notifiable): array
+    public function via(): array
     {
         return ['mail'];
     }
@@ -35,10 +37,10 @@ final class PriceChanged extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage())
-            ->greeting('Hello ' . $notifiable->name . '!')
+            ->greeting('Hello '.$notifiable->name.'!')
             ->subject('Product you are interested in has a new price!')
-            ->line($this->variant->product->brand->name . ' ' . $this->variant->product->name . ' ' . $this->variant->color->name . ' has a new price!')
-            ->action('Show', env('FRONTEND_URL') . '/products/' . $this->variant->id);
+            ->line($this->variant->product->brand->name.' '.$this->variant->product->name.' '.$this->variant->color->name.' has a new price!')
+            ->action('Show', env('FRONTEND_URL').'/products/'.$this->variant->id);
     }
 
     /**
@@ -46,7 +48,7 @@ final class PriceChanged extends Notification implements ShouldQueue
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toArray(): array
     {
         return [
 

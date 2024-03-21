@@ -23,7 +23,7 @@ class CartStoreRequest extends FormRequest
     {
         return [
             'variant_id' => 'required|exists:variants,id',
-            'option_id'  => 'required|exists:options,id'
+            'option_id' => 'required|exists:options,id',
         ];
     }
 }

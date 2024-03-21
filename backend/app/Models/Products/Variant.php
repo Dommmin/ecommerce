@@ -60,7 +60,7 @@ final class Variant extends Model
                 },
                 'product.vote',
                 'product.brand',
-                'lowestPrice'
+                'lowestPrice',
             ])
             ->withWhereHas('options')
             ->when($request->filled('category'), function ($query) use ($request) {
@@ -104,7 +104,8 @@ final class Variant extends Model
                         ->with(['variants' => function ($query): void {
                             $query->where('published', true)
                                 ->with('color');
-                        }]);
+                        },
+                        ]);
                 },
                 'options.size',
                 'lowestPrice',

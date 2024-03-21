@@ -44,7 +44,7 @@ final class ProductController extends Controller
             $variant = Variant::getProduct($variantId);
         } catch (\Throwable $e) {
             return response()->json([
-                'message' => 'Product not found'
+                'message' => 'Product not found',
             ], 404);
         }
 

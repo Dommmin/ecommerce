@@ -1,0 +1,44 @@
+variables:
+  MYSQL_ROOT_PASSWORD: secret
+  MYSQL_USER: laravel
+  MYSQL_PASSWORD: secret
+  MYSQL_DATABASE: laravel
+  DB_HOST: mysql
+
+cache:
+  paths:
+    - backend/vendor/
+    - frontend/node_modules/
+
+stages:
+  - test
+
+.config:
+  image: php:8.2-fpm
+  services:
+    - mysql:latest
+  before_script:
+    - cd ./backend
+    - curl -sS https://getcomposer.org/installer | php
+    - mv composer.phar /usr/local/bin/composer
+    - apt-get update && apt-get install -y libzip-dev zip
+    - docker-php-ext-configure pcntl --enable-pcntl
+    - docker-php-ext-install pcntl zip
+    - docker-php-ext-install pdo_mysql
+    - cp .env.example .env
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+    - php artisan key:generate
+    - php artisan key:generate --env=testing
+    - php artisan config:cache
+    - php artisan config:cache --env=testing
+    - php artisan optimize:clear
+    - php artisan optimize:clear --env=testing
+    - chmod -R 755 .
+    - php artisan migrate:fresh
+
+check:
+  stage: test
+  extends:
+    - .config
+  script:
+    - php vendor/bin/phpunit --no-coverage --colors=never

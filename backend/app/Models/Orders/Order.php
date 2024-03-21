@@ -28,7 +28,7 @@ final class Order extends Model
     {
         parent::boot();
 
-        static::creating(function ($model): void {
+        self::creating(function ($model): void {
             $model->uuid = Str::uuid();
         });
     }

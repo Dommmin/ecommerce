@@ -8,7 +8,6 @@ use App\Http\Requests\CartStoreRequest;
 use App\Models\Cart;
 use App\Models\Products\Option;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 final class CartController extends Controller
@@ -31,7 +30,7 @@ final class CartController extends Controller
         $cart = Cart::firstWhere([
             'user_id' => auth()->id(),
             'variant_id' => $validatedData['variant_id'],
-            'option_id' => $validatedData['option_id']
+            'option_id' => $validatedData['option_id'],
         ]);
 
         if ($cart) {
@@ -50,7 +49,7 @@ final class CartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Product added to cart'
+            'message' => 'Product added to cart',
         ]);
     }
 
@@ -60,17 +59,16 @@ final class CartController extends Controller
             abort(403);
         }
 
-        if ('add' === request('event')) {
+        if (request('event') === 'add') {
             if ($cart->quantity < $cart->option->quantity) {
                 return $cart->update(['quantity' => $cart->quantity + 1]);
             }
             throw ValidationException::withMessages([
                 'event' => 'Quantity must be less than or equal to ' . $cart->option->quantity,
             ]);
-
         }
 
-        if ('subtract' === request('event')) {
+        if (request('event') === 'subtract') {
             if ($cart->quantity <= 1) {
                 throw ValidationException::withMessages([
                     'event' => 'Quantity must be greater than 1',
@@ -96,7 +94,7 @@ final class CartController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Product removed from cart'
+            'message' => 'Product removed from cart',
         ]);
     }
 

@@ -19,7 +19,9 @@ final class OrderComplete extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private readonly Order $order) {}
+    public function __construct(private readonly Order $order)
+    {
+    }
 
     /**
      * Get the message envelope.
@@ -55,7 +57,7 @@ final class OrderComplete extends Mailable
     {
         return $this->markdown('emails.orders.confirmed')
             ->with([
-                'order' => $this->order
+                'order' => $this->order,
             ]);
     }
 }

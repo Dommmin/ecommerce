@@ -10,7 +10,7 @@ trait Auditable
     public static function bootAuditable(): void
     {
         static::updated(function ($model) {
-            if (!$model->isDirty()) {
+            if (! $model->isDirty()) {
                 return;
             }
 

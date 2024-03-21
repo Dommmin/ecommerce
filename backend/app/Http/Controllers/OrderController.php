@@ -27,7 +27,7 @@ final class OrderController extends Controller
     {
         $user = auth()->user();
 
-        if (!$user) {
+        if (! $user) {
             return response('Unauthorized', 401);
         }
 

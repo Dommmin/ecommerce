@@ -42,13 +42,12 @@ final class ProductController
             $fileName = $file->getClientOriginalName();
             $file->storeAs('public', $fileName);
 
-            $path = Storage::path('public/' . $fileName);
+            $path = Storage::path('public/'.$fileName);
 
             $products = [];
 
             $categories = Category::pluck('id', 'name')->toArray();
             $brands = Brand::pluck('id', 'name')->toArray();
-
 
             try {
                 $rows = SimpleExcelReader::create($path)->getRows();
@@ -66,15 +65,15 @@ final class ProductController
                     }
 
                     foreach ($rowProperties as $key => $value) {
-                        if (empty($value)) {
+                        if (!$value) {
                             throw new Exception("Empty field: {$key}");
                         }
                     }
 
                     $category = Arr::get($categories, $rowProperties['category']);
-                    $brand    = Arr::get($brands, $rowProperties['brand']);
+                    $brand = Arr::get($brands, $rowProperties['brand']);
 
-                    if ( ! $brand || ! $category) {
+                    if (!$brand || !$category) {
                         throw new Exception('Brand or category not found');
                     }
 
