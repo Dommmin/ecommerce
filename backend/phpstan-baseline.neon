@@ -1,0 +1,191 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Property App\\\\Models\\\\Products\\\\Variant\\:\\:\\$published \\(bool\\) does not accept int\\.$#"
+			count: 1
+			path: app/Http/Controllers/Admin/VariantController.php
+
+		-
+			message: "#^Parameter \\#1 \\$user of class Illuminate\\\\Auth\\\\Events\\\\Verified constructor expects Illuminate\\\\Contracts\\\\Auth\\\\MustVerifyEmail, App\\\\Models\\\\User\\|null given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Auth/VerifyEmailController.php
+
+		-
+			message: "#^Instanceof between App\\\\Models\\\\User and Illuminate\\\\Contracts\\\\Auth\\\\MustVerifyEmail will always evaluate to false\\.$#"
+			count: 1
+			path: app/Http/Middleware/EnsureEmailIsVerified.php
+
+		-
+			message: "#^Result of && is always false\\.$#"
+			count: 1
+			path: app/Http/Middleware/EnsureEmailIsVerified.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\BrandResource\\:\\:\\$id\\.$#"
+			count: 1
+			path: app/Http/Resources/BrandResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\BrandResource\\:\\:\\$name\\.$#"
+			count: 1
+			path: app/Http/Resources/BrandResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ColorResource\\:\\:\\$id\\.$#"
+			count: 1
+			path: app/Http/Resources/ColorResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ColorResource\\:\\:\\$name\\.$#"
+			count: 1
+			path: app/Http/Resources/ColorResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\OptionResource\\:\\:\\$id\\.$#"
+			count: 1
+			path: app/Http/Resources/OptionResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\OptionResource\\:\\:\\$quantity\\.$#"
+			count: 1
+			path: app/Http/Resources/OptionResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\OptionResource\\:\\:\\$size\\.$#"
+			count: 1
+			path: app/Http/Resources/OptionResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$brand\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$category\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$description\\.$#"
+			count: 2
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$id\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$name\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$option\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$price\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$ratings_avg_value\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$ratings_count\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$variants\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\ProductResource\\:\\:\\$vote\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Expression on left side of \\?\\? is not nullable\\.$#"
+			count: 1
+			path: app/Http/Resources/ProductResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\SizeResource\\:\\:\\$id\\.$#"
+			count: 1
+			path: app/Http/Resources/SizeResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\SizeResource\\:\\:\\$name\\.$#"
+			count: 1
+			path: app/Http/Resources/SizeResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$color\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$created_at\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$id\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$images\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$isFavorite\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$lowestPrice\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$main_photo\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$options\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$price\\.$#"
+			count: 2
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$product\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$published\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Access to an undefined property App\\\\Http\\\\Resources\\\\VariantResource\\:\\:\\$size\\.$#"
+			count: 1
+			path: app/Http/Resources/VariantResource.php
+
+		-
+			message: "#^Method App\\\\Observers\\\\VariantObserver\\:\\:generateThumbnail\\(\\) is unused\\.$#"
+			count: 1
+			path: app/Observers/VariantObserver.php
