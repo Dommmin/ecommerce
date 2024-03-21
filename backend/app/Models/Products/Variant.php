@@ -24,6 +24,9 @@ final class Variant extends Model
 
     protected $guarded = [];
     protected $appends = ['main_photo'];
+    protected $casts = [
+        'images' => 'string',
+    ];
 
     public static function getFeatureProducts()
     {
@@ -78,7 +81,7 @@ final class Variant extends Model
             ->when($request->filled('search'), function ($query) use ($request) {
                 // Use whereHas to filter based on the associated product's search
                 return $query->whereHas('product', function ($productQuery) use ($request): void {
-                    $productQuery->where('name', 'like', '%' . $request->get('search') . '%');
+                    $productQuery->where('name', 'like', '%'.$request->get('search').'%');
                 });
             })
             ->published()
@@ -101,10 +104,11 @@ final class Variant extends Model
                 'product' => function ($query): void {
                     $query->withAvg('ratings', 'value')
                         ->withCount('ratings')
-                        ->with(['variants' => function ($query): void {
-                            $query->where('published', true)
-                                ->with('color');
-                        },
+                        ->with([
+                            'variants' => function ($query): void {
+                                $query->where('published', true)
+                                    ->with('color');
+                            },
                         ]);
                 },
                 'options.size',
@@ -149,14 +153,14 @@ final class Variant extends Model
         return $query->where('published', true);
     }
 
-    public function favorite(): HasOne
-    {
-        return $this->hasOne(Favorite::class);
-    }
-
     public function isFavorite(): HasOne
     {
         return $this->favorite()->where('user_id', auth()->id());
+    }
+
+    public function favorite(): HasOne
+    {
+        return $this->hasOne(Favorite::class);
     }
 
     public function lowestPrice(): HasOne
@@ -181,7 +185,7 @@ final class Variant extends Model
             ->generateSlugsFrom(function ($model) {
                 $model->load(['product.brand', 'color']);
 
-                return $model->product->brand->name . ' ' . $model->product->name . ' ' . $model->color->name;
+                return $model->product->brand->name.' '.$model->product->name.' '.$model->color->name;
             })
             ->saveSlugsTo('url');
     }
