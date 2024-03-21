@@ -24,9 +24,6 @@ jobs:
         with:
           node-version: '20'
       - uses: actions/checkout@v4
-      - uses: php-actions/phpunit@v3
-        with:
-          php-version: '8.2'
       - run: cd backend
       - name: Copy .env
         run: cp .env.example .env
