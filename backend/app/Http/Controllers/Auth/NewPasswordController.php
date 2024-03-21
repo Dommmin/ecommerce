@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 
-final class NewPasswordController extends Controller
+class NewPasswordController extends Controller
 {
     /**
      * Handle an incoming new password request.

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from '../lib/axios.js';
 import { useCart } from '../hooks/useCart.js';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Slide, toast, ToastContainer } from 'react-toastify';
 
@@ -41,13 +41,26 @@ function Index() {
     const handleUpdateQuantity = async (cartId, event) => {
         setIsUpdating(true);
         try {
-            await axios.post('api/cart/' + cartId + '/update-quantity', { event });
+            await axios.put('api/cart/' + cartId, { event });
         } catch (error) {
-            console.log(error);
+            if (error.response.status === 422) {
+                return toast.error(error.response.data.message, {
+                    position: 'bottom-right',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'dark',
+                    transition: Slide,
+                });
+            }
+        } finally {
+            await refetch();
+            setIsUpdating(false);
+            await mutate();
         }
-        await refetch();
-        setIsUpdating(false);
-        await mutate();
     };
 
     const removeFromCart = async (cartId) => {

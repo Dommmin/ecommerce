@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Admin;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\OrderController;
@@ -24,7 +23,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->get('/user', fn (Request $request) => $request->user());
 
-Route::post('cart/{cart}/update-quantity', [CartController::class, 'updateQuantity']);
 Route::get('cart-items', [CartController::class, 'items']);
 Route::get('favorites-count', [FavoriteController::class, 'favCount']);
 Route::apiResource('cart', CartController::class);
@@ -39,23 +37,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('ratings', RatingController::class);
 });
 
-Route::prefix('admin')->group(function (): void {
-    Route::middleware('admin')->group(function (): void {
-        Route::get('statuses', [Admin\StatusController::class, 'index']);
-        Route::post('variants/{variant}/publish', [Admin\VariantController::class, 'publish']);
-        Route::post('variants/{variant}/unpublish', [Admin\VariantController::class, 'unpublish']);
-        Route::put('orders/{order}/update-status', [Admin\OrderController::class, 'updateStatus']);
-        Route::post('products/import', [Admin\ProductController::class, 'import'])->name('products.import');
-        Route::apiResource('colors', Admin\ColorController::class);
-        Route::apiResource('sizes', Admin\SizeController::class);
-        Route::apiResource('products', Admin\ProductController::class)->names('admin.products.');
-        Route::apiResource('categories', Admin\CategoryController::class)->except('index');
-        Route::apiResource('brands', Admin\BrandController::class)->except('index');
-        Route::apiResource('variants', Admin\VariantController::class);
-        Route::apiResource('users', Admin\UserController::class);
-        Route::apiResource('orders', Admin\OrderController::class)->names('admin.orders.');
-    });
-
-    Route::apiResource('categories', Admin\CategoryController::class)->only('index');
-    Route::apiResource('brands', Admin\BrandController::class)->only('index');
-});
+require __DIR__.'/admin.php';

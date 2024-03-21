@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Rating;
 use Illuminate\Http\Request;
 
-final class RatingController extends Controller
+class RatingController extends Controller
 {
     public function store(Request $request)
     {

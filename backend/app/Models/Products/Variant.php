@@ -7,6 +7,7 @@ namespace App\Models\Products;
 use App\Models\Color;
 use App\Models\Favorite;
 use App\Models\Price;
+use App\Models\Size;
 use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-final class Variant extends Model
+class Variant extends Model
 {
     use HasFactory;
     use HasSlug;
@@ -136,6 +137,11 @@ final class Variant extends Model
     public function color(): BelongsTo
     {
         return $this->belongsTo(Color::class);
+    }
+
+    public function size(): BelongsTo
+    {
+        return $this->belongsTo(Size::class);
     }
 
     public function favorites(): HasMany

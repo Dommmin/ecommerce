@@ -10,7 +10,7 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 
-final class VerifyEmailController extends Controller
+class VerifyEmailController extends Controller
 {
     /**
      * Mark the authenticated user's email address as verified.
@@ -19,7 +19,7 @@ final class VerifyEmailController extends Controller
     {
         if ($request->user()->hasVerifiedEmail()) {
             return redirect()->intended(
-                config('app.frontend_url') . RouteServiceProvider::HOME . '?verified=1'
+                config('app.frontend_url').RouteServiceProvider::HOME.'?verified=1'
             );
         }
 
@@ -28,7 +28,7 @@ final class VerifyEmailController extends Controller
         }
 
         return redirect()->intended(
-            config('app.frontend_url') . RouteServiceProvider::HOME . '?verified=1'
+            config('app.frontend_url').RouteServiceProvider::HOME.'?verified=1'
         );
     }
 }

@@ -7,7 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FavoriteStoreRequest;
 use App\Models\Favorite;
 
-final class FavoriteController extends Controller
+class FavoriteController extends Controller
 {
     public function index()
     {

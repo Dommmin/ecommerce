@@ -10,7 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
 /** @mixin Product */
-final class ProductResource extends JsonResource
+class ProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -28,10 +28,9 @@ final class ProductResource extends JsonResource
             'voted' => (bool) $this->vote,
             'rating' => number_format((int) $this->ratings_avg_value, 2) ?? 0,
             'ratings_count' => $this->ratings_count,
-            'brand' => $this->whenLoaded('brand', fn() => new BrandResource($this->brand)),
-            'category' => $this->whenLoaded('category', fn() => new CategoryResource($this->category)),
-            'variants' => $this->whenLoaded('variants', fn() => VariantResource::collection($this->variants)),
-            'option' => $this->whenLoaded('option', fn() => new OptionResource($this->option)),
+            'brand' => $this->whenLoaded('brand', fn () => new BrandResource($this->brand)),
+            'category' => $this->whenLoaded('category', fn () => new CategoryResource($this->category)),
+            'variants' => $this->whenLoaded('variants', fn () => VariantResource::collection($this->variants)),
         ];
     }
 }

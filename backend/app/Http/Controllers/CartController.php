@@ -6,11 +6,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CartStoreRequest;
 use App\Models\Cart;
-use App\Models\Products\Option;
+use App\Service\CartService;
 use Exception;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Request;
 
-final class CartController extends Controller
+class CartController extends Controller
 {
     public function index()
     {
@@ -27,68 +27,31 @@ final class CartController extends Controller
     {
         $validatedData = $request->validated();
 
-        $cart = Cart::firstWhere([
-            'user_id' => auth()->id(),
-            'variant_id' => $validatedData['variant_id'],
-            'option_id' => $validatedData['option_id'],
-        ]);
-
-        if ($cart) {
-            $option = Option::where('id', $validatedData['option_id'])->first();
-
-            if ($cart->quantity < $option->quantity) {
-                $cart->update(['quantity' => $cart->quantity + 1]);
-            } else {
-                throw ValidationException::withMessages([
-                    'event' => 'Quantity must be less than or equal to ' . $option->quantity,
-                ]);
-            }
-        } else {
-            Cart::create($validatedData + ['user_id' => auth()->id()]);
+        try {
+            CartService::createOrUpdate($validatedData);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Product added to cart',
-        ]);
+        return response()->json(['success' => true]);
     }
 
-    public function updateQuantity(Cart $cart)
+    public function update(Cart $cart, Request $request)
     {
-        if ($cart->user_id !== auth()->id()) {
-            abort(403);
+        $this->authorize('update', $cart);
+
+        try {
+            CartService::updateQuantity($cart, $request);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
         }
 
-        if (request('event') === 'add') {
-            if ($cart->quantity < $cart->option->quantity) {
-                return $cart->update(['quantity' => $cart->quantity + 1]);
-            }
-            throw ValidationException::withMessages([
-                'event' => 'Quantity must be less than or equal to ' . $cart->option->quantity,
-            ]);
-        }
-
-        if (request('event') === 'subtract') {
-            if ($cart->quantity <= 1) {
-                throw ValidationException::withMessages([
-                    'event' => 'Quantity must be greater than 1',
-                ]);
-            }
-
-            return $cart->update(['quantity' => $cart->quantity - 1]);
-        }
-
-        return response()->json(['success' => false]);
+        return response()->json(['success' => true, 'message' => 'Quantity updated']);
     }
 
     public function destroy(Cart $cart)
     {
-        if ($cart->user_id !== auth()->id()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized',
-            ]);
-        }
+        $this->authorize('destroy', $cart);
 
         $cart->delete();
 

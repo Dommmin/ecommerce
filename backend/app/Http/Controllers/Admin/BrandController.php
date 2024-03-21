@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 
-final class BrandController extends Controller
+class BrandController extends Controller
 {
     public function index()
     {

@@ -6,7 +6,7 @@ namespace App\Observers;
 
 use App\Models\User;
 
-final class UserObserver
+class UserObserver
 {
     public function creating(User $user): void
     {

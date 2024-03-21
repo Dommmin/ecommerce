@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
-final class SendOrderStatusChangedEmail implements ShouldQueue
+class SendOrderStatusChangedEmail implements ShouldQueue
 {
     use InteractsWithQueue;
 

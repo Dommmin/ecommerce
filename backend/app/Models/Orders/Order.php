@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Str;
 
-final class Order extends Model
+class Order extends Model
 {
     use HasFactory;
 

@@ -10,7 +10,7 @@ use App\Models\Orders\Order;
 use Exception;
 use Illuminate\Http\Request;
 
-final class OrderController extends Controller
+class OrderController extends Controller
 {
     public function index()
     {
@@ -29,13 +29,6 @@ final class OrderController extends Controller
             ->first();
     }
 
-    public function update(Order $order, Request $request)
-    {
-        $order->update($request->all());
-
-        return $order;
-    }
-
     public function updateStatus(Order $order, Request $request)
     {
         try {
@@ -45,6 +38,13 @@ final class OrderController extends Controller
         }
 
         event(new OrderStatusChangedEvent($order));
+
+        return $order;
+    }
+
+    public function update(Order $order, Request $request)
+    {
+        $order->update($request->all());
 
         return $order;
     }

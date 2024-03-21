@@ -14,7 +14,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-final class SendOrderCompleteEmail implements ShouldQueue
+class SendOrderCompleteEmail implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

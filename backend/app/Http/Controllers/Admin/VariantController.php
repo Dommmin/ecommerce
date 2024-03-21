@@ -10,7 +10,7 @@ use App\Models\Products\Variant;
 use DB;
 use Illuminate\Http\Request;
 
-final class VariantController extends Controller
+class VariantController extends Controller
 {
     public function store(VariantStoreRequest $request)
     {
@@ -21,7 +21,7 @@ final class VariantController extends Controller
                 $images = [];
                 foreach ($request->file('images') as $image) {
                     $imagePath = $image->store('images', 'public');
-                    $images[] = url('/storage/' . $imagePath);
+                    $images[] = url('/storage/'.$imagePath);
                 }
 
                 $variant->images = json_encode($images);

@@ -9,7 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-final class OrderStatusChanged extends Mailable
+class OrderStatusChanged extends Mailable
 {
     use Queueable;
     use SerializesModels;

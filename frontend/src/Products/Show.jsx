@@ -64,7 +64,7 @@ function Show() {
     });
 
     if (error) {
-        console.log(error);
+        console.e(error);
     }
 
     // const fetchProduct = useCallback(() => {
@@ -140,7 +140,19 @@ function Show() {
                 });
             }
         } catch (error) {
-            console.log(error);
+            if (error.response.status === 422) {
+                toast.error(error.response.data.message, {
+                    position: 'bottom-right',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'dark',
+                    transition: Slide,
+                });
+            }
         }
 
         await mutate();

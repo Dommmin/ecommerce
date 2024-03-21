@@ -9,7 +9,7 @@ use App\Models\Color;
 use App\Models\Products\Variant;
 use Illuminate\Http\Request;
 
-final class ColorController extends Controller
+class ColorController extends Controller
 {
     public function index(Request $request)
     {

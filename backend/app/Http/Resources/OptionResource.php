@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin Option */
-final class OptionResource extends JsonResource
+class OptionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,7 +21,7 @@ final class OptionResource extends JsonResource
         return [
             'id' => $this->id,
             'quantity' => $this->quantity,
-            'size' => $this->whenLoaded('size', fn() => new SizeResource($this->size)),
+            'size' => $this->whenLoaded('size', fn () => new SizeResource($this->size)),
         ];
     }
 }

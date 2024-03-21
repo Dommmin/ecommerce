@@ -7,7 +7,7 @@ namespace App\Console\Commands;
 use App\Models\Price;
 use Illuminate\Console\Command;
 
-final class ClearHistoricalPrices extends Command
+class ClearHistoricalPrices extends Command
 {
     /**
      * The name and signature of the console command.
