@@ -18,34 +18,31 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping"
-
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
       - uses: actions/checkout@v4
       - name: Copy .env
-        working-directory: backend
         run: cp .env.testing .env
       - name: Install Dependencies
-        working-directory: backend
         run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Generate key
-        working-directory: backend
         run: php artisan key:generate
       - name: Directory permissions
-        working-directory: backend
         run: chmod -R 777 storage bootstrap/cache
       - name: phpstan
-        working-directory: backend
         run: vendor/bin/phpstan analyse --memory-limit=1G
       - name: phpinsights
-        working-directory: backend
         run: |
           php artisan insights --no-interaction \
           --min-quality=90 --min-complexity=90 \
           --min-architecture=90 --min-style=90 \
           --ansi --format=github-action
       - name: Run tests
-        working-directory: backend
-        run: php artisan test
+        run: |
+          cd backend
+          php artisan test
