@@ -12,28 +12,28 @@ class OrderService
 {
     public static function processOrder(): Order
     {
-        $cartItems = Cart::where('user_id', auth()->id());
+        $cartQuery = Cart::query()->whereUserId(auth()->id());
         $order = new Order();
 
-        self::createOrder($cartItems, $order);
+        self::createOrder($cartQuery, $order);
 
         return $order;
     }
 
     /**
-     * @param  Cart  $cartItems
+     * @param $cartQuery
      * @param  Order  $order
      *
      * @return void
      */
-    private static function createOrder(Cart $cartItems, Order $order): void
+    private static function createOrder($cartQuery, Order $order): void
     {
-        DB::transaction(function () use ($cartItems, $order): void {
+        DB::transaction(function () use ($cartQuery, $order): void {
             $order->user_id = auth()->id();
             $order->shipment_id = Shipment::pluck('id')->random();
             $order->save();
 
-            collect($cartItems->with('variant', 'option')->get())->each(function ($cartItem) use ($order): void {
+            collect($cartQuery->with('variant', 'option')->get())->each(function ($cartItem) use ($order): void {
                 Item::create([
                     'order_id' => $order->id,
                     'option_id' => $cartItem->option_id,
@@ -44,7 +44,7 @@ class OrderService
                 $cartItem->option->update(['quantity' => $cartItem->option->quantity - $cartItem->quantity]);
             });
 
-            $cartItems->delete();
+            $cartQuery->delete();
         });
     }
 }
