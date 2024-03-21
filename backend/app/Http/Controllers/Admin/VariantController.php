@@ -30,7 +30,7 @@ class VariantController extends Controller
             $variant->product_id = $request->product_id;
             $variant->color_id = $request->color_id;
             $variant->price = $request->price;
-            $variant->published = $request->published ? 1 : 0;
+            $variant->published = (bool) $request->published;
             $variant->thumbnail = $images[0] ?? '';
             $variant->save();
 
