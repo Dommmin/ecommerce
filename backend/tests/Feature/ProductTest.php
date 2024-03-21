@@ -12,7 +12,6 @@ use App\Models\Products\Variant;
 use App\Models\Size;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -22,24 +21,6 @@ class ProductTest extends TestCase
     private User $user;
     private User $adminUser;
     private Variant $variant;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->user = User::factory()->create(['is_admin' => false]);
-        $this->adminUser = User::factory()->create(['is_admin' => true]);
-
-        Color::factory()->create();
-        Category::factory()->create();
-        Brand::factory()->create();
-        Size::factory()->create();
-        Product::factory()->create();
-        $this->variant = Variant::factory()->create([
-            'published' => true,
-        ]);
-        Option::factory()->create();
-    }
 
     public function test_api_returns_posts_list(): void
     {
@@ -107,6 +88,7 @@ class ProductTest extends TestCase
         $cartItem = [
             'option_id' => $option->id,
             'variant_id' => $option->variant->id,
+            'quantity' => 1,
         ];
 
         $this->post('/api/cart', $cartItem)->assertStatus(200);
@@ -122,10 +104,11 @@ class ProductTest extends TestCase
         $cart = Cart::create([
             'option_id' => $option->id,
             'variant_id' => $option->variant->id,
-            'user_id' => $this->user->id
+            'user_id' => $this->user->id,
+            'quantity' => 1,
         ]);
 
-        $this->delete('/api/cart/' . $cart->id)->assertStatus(200);
+        $this->delete('/api/cart/'.$cart->id)->assertStatus(200);
     }
 
     public function test_authenticated_user_can_add_to_wishlist()
@@ -138,5 +121,25 @@ class ProductTest extends TestCase
     public function test_unauthenticated_user_cannot_add_to_wishlist()
     {
         $this->post('/api/favorites', ['variant_id' => $this->variant->id])->assertStatus(302);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create(['is_admin' => false]);
+        $this->adminUser = User::factory()->create(['is_admin' => true]);
+
+        Color::factory()->create();
+        Category::factory()->create();
+        Brand::factory()->create();
+        Size::factory()->create();
+        Product::factory()->create();
+        $this->variant = Variant::factory()->create([
+            'published' => true,
+        ]);
+        Option::factory()->create([
+            'quantity' => 10,
+        ]);
     }
 }
