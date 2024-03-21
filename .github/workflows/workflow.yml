@@ -25,7 +25,7 @@ jobs:
           node-version: '20'
       - uses: actions/checkout@v4
       - uses: php-actions/composer@v6
-      - uses: php-actions/phpunit@v9
+      - uses: php-actions/phpunit@v3
         with:
           php-version: '8.2'
 
